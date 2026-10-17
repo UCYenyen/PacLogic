@@ -27,6 +27,7 @@ class ProgramEditor:
         self.program = []
         self.press = None
         self.dragging = False
+        self.editing = None
         self.scroll = 0
         self.palette_rect = pygame.Rect(settings.PALETTE_RECT)
         self.program_rect = pygame.Rect(settings.PROGRAM_RECT)
@@ -53,6 +54,7 @@ class ProgramEditor:
     def cancel(self):
         self.press = None
         self.dragging = False
+        self.editing = None
 
     def palette_at(self, position) -> int | None:
         for index, rect in enumerate(self.palette_rects):
@@ -89,6 +91,7 @@ class ProgramEditor:
         self.program.insert(index, blocks.new_block(template, depth))
 
     def mouse_down(self, position) -> bool:
+        self.editing = None
         palette_index = self.palette_at(position)
         if palette_index is not None:
             self.press = Press(PALETTE, palette_index, position)
@@ -115,8 +118,26 @@ class ProgramEditor:
         if press.source == PALETTE:
             end = len(self.program)
             self.insert(blocks.PALETTE[press.index], end, blocks.depth_range(self.program, end)[1])
+        elif self.program[press.index]["type"] in blocks.COUNT_RANGES:
+            self.start_typing(self.program[press.index])
+
+    def start_typing(self, block: dict):
+        self.editing = block
+        low, high = blocks.COUNT_RANGES[block["type"]]
+        self.flash.show(f"Type a number from {low} to {high}, then press Enter")
+
+    def type_key(self, event: pygame.event.Event):
+        if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
+            self.editing = None
+            return
+        if not event.unicode.isdigit():
+            return
+        value = int(event.unicode)
+        if blocks.valid_count(self.editing["type"], value):
+            self.editing["n"] = value
         else:
-            self.program[press.index] = blocks.cycle_value(self.program[press.index])
+            low, high = blocks.COUNT_RANGES[self.editing["type"]]
+            self.flash.show(f"{self.editing['type']} takes {low} to {high}")
 
     def drop(self, press: Press, position):
         inside = self.program_rect.collidepoint(position)
@@ -144,6 +165,9 @@ class ProgramEditor:
         return True
 
     def handle_event(self, event: pygame.event.Event) -> bool:
+        if event.type == pygame.KEYDOWN and self.editing is not None:
+            self.type_key(event)
+            return True
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             return self.mouse_down(event.pos)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
@@ -182,7 +206,7 @@ class ProgramEditor:
             slot = index + 1 if gap is not None and index >= gap else index
             top = self.row_top(slot)
             left = self.program_rect.x + settings.PANEL_PADDING + block["depth"] * settings.INDENT
-            draw_block(surface, block, (left, top))
+            draw_block(surface, block, (left, top), block is self.editing)
         surface.set_clip(None)
 
     def draw(self, surface: pygame.Surface):

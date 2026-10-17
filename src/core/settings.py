@@ -124,6 +124,7 @@ UI_BLOCKS = {
 UI_MOVE_BLOCKS = {code: f"ui/plan/blocks/move-{name}.png" for code, name in DIRECTION_NAMES.items()}
 COUNT_BOX = (48, 2, 15, 9)
 COUNT_COLOR = (61, 61, 60)
+COUNT_TYPING_COLOR = (220, 30, 30)
 
 BUTTON_PLACEHOLDER_SIZE = (100, 20)
 BLOCK_PLACEHOLDER_SIZE = (64, 16)

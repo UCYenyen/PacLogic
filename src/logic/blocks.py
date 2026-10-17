@@ -45,11 +45,9 @@ COUNT_RANGES = {
 }
 
 
-def cycle_value(block: dict) -> dict:
-    if block["type"] not in COUNT_RANGES:
-        return block
-    low, high = COUNT_RANGES[block["type"]]
-    return {**block, "n": low + (block["n"] - low + 1) % (high - low + 1)}
+def valid_count(kind: str, value: int) -> bool:
+    low, high = COUNT_RANGES[kind]
+    return low <= value <= high
 
 
 def _clamp(value: int, low: int, high: int) -> int:
