@@ -1,5 +1,6 @@
 from src.core import settings
 from src.logic.grid import manhattan, move
+from src.logic.sim import idle
 
 MOVE = "MOVE"
 WAIT = "WAIT"
@@ -158,10 +159,5 @@ def _execute(nodes: list, sim, ghost_index: int, ops: list):
 
 
 def run(tree: list, sim, ghost_index: int):
-    ops = [0]
-    while True:
-        yield from _execute(tree, sim, ghost_index, ops)
-        ops[0] += 1
-        if ops[0] > settings.OP_CAP:
-            ops[0] = 0
-            yield None
+    yield from _execute(tree, sim, ghost_index, [0])
+    yield from idle(sim, ghost_index)

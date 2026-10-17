@@ -26,6 +26,7 @@ python main.py
    - Click a palette block to append it, or drag it between rows to insert it.
    - Drag a program block to reorder it. Drag it out of the panel or right click it to delete it.
    - Click REPEAT or IF PAC WITHIN to cycle its number.
+   - Each program runs once from top to bottom. When it ends, the ghost waits where it is. Use REPEAT to keep it moving.
    - Press Lock & Run, or wait for the timer to reach 0.
 4. **Run**: SPACE pauses, F toggles speed between x1 and x4.
 5. **Result**: Restart to replan the same map from empty programs, or go back to the menu.
