@@ -39,10 +39,16 @@ def nine_slice(source: pygame.Surface, border: int, size: tuple) -> pygame.Surfa
 
 
 class Panel(Component):
-    def __init__(self, rect, image_path: str = settings.UI_PANEL, border: int = settings.UI_PANEL_BORDER):
-        source = load_scaled_image(image_path, settings.UI_SCALE, settings.PANEL_PLACEHOLDER_SIZE)
+    def __init__(
+        self,
+        rect,
+        image_path: str = settings.UI_PANEL,
+        border: int = settings.UI_PANEL_BORDER,
+        scale: int = settings.UI_SCALE,
+    ):
+        source = load_scaled_image(image_path, scale, settings.PANEL_PLACEHOLDER_SIZE)
         self.rect = pygame.Rect(rect)
-        self.surface = nine_slice(source, border * settings.UI_SCALE, self.rect.size)
+        self.surface = nine_slice(source, border * scale, self.rect.size)
 
     def draw(self, surface: pygame.Surface):
         if self.visible:

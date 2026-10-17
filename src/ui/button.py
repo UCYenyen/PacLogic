@@ -4,6 +4,7 @@ from src.core import settings
 from src.core.resource_loader import load_scaled_image
 from src.ui.component import Component
 from src.ui.label import Label
+from src.ui.panel import nine_slice
 
 
 class ImageButton(Component):
@@ -17,10 +18,12 @@ class ImageButton(Component):
         font_size: int = settings.FONT_MEDIUM,
         fallback_size: tuple[int, int] = settings.BUTTON_PLACEHOLDER_SIZE,
         scale: int = settings.UI_BUTTON_SCALE,
+        size: tuple[int, int] | None = None,
     ):
-        self.normal, self.hover, self.pressed_image = (
-            load_scaled_image(path, scale, fallback_size) for path in images
-        )
+        loaded = [load_scaled_image(path, scale, fallback_size) for path in images]
+        if size is not None:
+            loaded = [nine_slice(image, settings.UI_BUTTON_BORDER * scale, size) for image in loaded]
+        self.normal, self.hover, self.pressed_image = loaded
         self.rect = self.normal.get_rect(**{anchor: position})
         self.on_click = on_click
         self.pressed = False

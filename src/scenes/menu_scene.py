@@ -3,7 +3,6 @@ from functools import partial
 import pygame
 
 from src.core import settings
-from src.core.resource_loader import has_image
 from src.core.session import OPTIONS
 from src.logic.grid import LevelError
 from src.scenes import preview_scene
@@ -24,22 +23,28 @@ class MenuScene(BaseScene):
             ImageButton(
                 (center_x, settings.MENU_PLAY_Y),
                 self.open_setup,
-                images=(settings.MENU_PLAY_BUTTON,) * 3,
-                scale=settings.MENU_SCALE,
+                "PLAY",
+                font_size=settings.FONT_LARGE,
+                size=settings.MENU_BUTTON_SIZE,
             ),
             ImageButton(
                 (center_x, settings.MENU_QUIT_Y),
                 self.game.quit,
-                images=(settings.MENU_QUIT_BUTTON,) * 3,
-                scale=settings.MENU_SCALE,
+                "QUIT",
+                font_size=settings.FONT_LARGE,
+                size=settings.MENU_BUTTON_SIZE,
             ),
         ]
         modal = Panel(settings.SETUP_MODAL_RECT)
         self.option_boxes = {
-            option: Image(
-                settings.MENU_OPTION_BOX,
-                (center_x, modal.rect.y + 140 + row * 60),
-                fallback_size=settings.OPTION_PLACEHOLDER_SIZE,
+            option: Panel(
+                pygame.Rect((0, 0), settings.OPTION_BOX_SIZE).move(
+                    center_x - settings.OPTION_BOX_SIZE[0] // 2,
+                    modal.rect.y + 140 + row * 60 - settings.OPTION_BOX_SIZE[1] // 2,
+                ),
+                settings.UI_BUTTON_IMAGES[0],
+                settings.UI_BUTTON_BORDER,
+                settings.UI_BUTTON_SCALE,
             )
             for row, option in enumerate(OPTIONS)
         }
@@ -51,8 +56,8 @@ class MenuScene(BaseScene):
             arrow
             for option in OPTIONS
             for arrow in (
-                self.arrow_button(settings.MENU_ARROW_LEFT, "<", "midright", option, -1),
-                self.arrow_button(settings.MENU_ARROW_RIGHT, ">", "midleft", option, 1),
+                self.arrow_button("<", "midright", option, -1),
+                self.arrow_button(">", "midleft", option, 1),
             )
         ]
         self.flash = FlashMessage((center_x, modal.rect.bottom + 40))
@@ -72,17 +77,15 @@ class MenuScene(BaseScene):
         self.ui = self.main_ui
         self.refresh()
 
-    def arrow_button(self, image: str, fallback_text: str, anchor: str, option: str, delta: int) -> ImageButton:
+    def arrow_button(self, text: str, anchor: str, option: str, delta: int) -> ImageButton:
         box = self.option_boxes[option].rect
         x = box.left - settings.ARROW_GAP if anchor == "midright" else box.right + settings.ARROW_GAP
         return ImageButton(
             (x, box.centery),
             partial(self.cycle, option, delta),
-            "" if has_image(image) else fallback_text,
+            text,
             anchor=anchor,
-            images=(image,) * 3,
-            fallback_size=settings.ARROW_PLACEHOLDER_SIZE,
-            scale=settings.UI_SCALE,
+            size=settings.ARROW_BUTTON_SIZE,
         )
 
     def open_setup(self):
