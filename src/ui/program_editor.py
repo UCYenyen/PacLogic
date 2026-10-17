@@ -77,11 +77,11 @@ class ProgramEditor:
         content = (len(self.program) + 1) * settings.ROW_HEIGHT + 2 * settings.PANEL_PADDING
         return max(0, content - self.program_rect.height)
 
-    def insert(self, block: dict, index: int):
-        if not blocks.can_add(self.program, block, self.limit):
+    def insert(self, template: dict, index: int):
+        if not blocks.can_add(self.program, self.limit):
             self.flash.show(f"Block limit reached ({self.limit})")
             return
-        self.program.insert(index, block)
+        self.program[index:index] = blocks.new_blocks(template)
 
     def mouse_down(self, position) -> bool:
         palette_index = self.palette_at(position)
@@ -90,7 +90,8 @@ class ProgramEditor:
             return True
         row = self.row_at(position)
         if row is not None:
-            self.press = Press(PROGRAM, row, position)
+            start, _ = blocks.block_span(self.program, row)
+            self.press = Press(PROGRAM, start, position)
             return True
         return False
 
@@ -107,7 +108,7 @@ class ProgramEditor:
 
     def click(self, press: Press):
         if press.source == PALETTE:
-            self.insert(blocks.new_block(blocks.PALETTE[press.index]), len(self.program))
+            self.insert(blocks.PALETTE[press.index], len(self.program))
         else:
             self.program[press.index] = blocks.cycle_value(self.program[press.index])
 
@@ -115,11 +116,14 @@ class ProgramEditor:
         inside = self.program_rect.collidepoint(position)
         if press.source == PALETTE:
             if inside:
-                self.insert(blocks.new_block(blocks.PALETTE[press.index]), self.insertion_index(position, len(self.program)))
+                self.insert(blocks.PALETTE[press.index], self.insertion_index(position, len(self.program)))
             return
-        block = self.program.pop(press.index)
+        start, stop = blocks.block_span(self.program, press.index)
+        moved = self.program[start:stop]
+        del self.program[start:stop]
         if inside:
-            self.program.insert(self.insertion_index(position, len(self.program)), block)
+            index = self.insertion_index(position, len(self.program))
+            self.program[index:index] = moved
 
     def delete_row(self, position) -> bool:
         if self.press is not None:
@@ -127,7 +131,8 @@ class ProgramEditor:
         row = self.row_at(position)
         if row is None:
             return False
-        self.program.pop(row)
+        start, stop = blocks.block_span(self.program, row)
+        del self.program[start:stop]
         return True
 
     def handle_event(self, event: pygame.event.Event) -> bool:
@@ -158,8 +163,10 @@ class ProgramEditor:
             draw_block(surface, template, rect.topleft)
 
     def draw_program(self, surface: pygame.Surface):
-        hidden = self.press.index if self.dragging and self.press.source == PROGRAM else None
-        shown = [block for index, block in enumerate(self.program) if index != hidden]
+        hidden = range(0)
+        if self.dragging and self.press.source == PROGRAM:
+            hidden = range(*blocks.block_span(self.program, self.press.index))
+        shown = [block for index, block in enumerate(self.program) if index not in hidden]
         mouse = pygame.mouse.get_pos()
         gap = self.insertion_index(mouse, len(shown)) if self.dragging and self.program_rect.collidepoint(mouse) else None
         indents = blocks.depths(shown)

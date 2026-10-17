@@ -43,8 +43,6 @@ GHOST_MIN_START_DISTANCE = 6
 
 REPEAT_MIN = 2
 REPEAT_MAX = 9
-NEAR_MIN = 1
-NEAR_MAX = 9
 
 DIFFICULTIES = {
     "Easy": {"replan": False, "preview": True, "block_limit": 12},
@@ -122,8 +120,6 @@ UI_BLOCKS = {
     "WAIT": "ui/blocks/wait.png",
     "REPEAT": "ui/blocks/repeat.png",
     "END": "ui/blocks/end.png",
-    "IF": "ui/blocks/if.png",
-    "ELSE": "ui/blocks/else.png",
 }
 
 BUTTON_PLACEHOLDER_SIZE = (100, 20)
