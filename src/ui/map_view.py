@@ -28,7 +28,8 @@ class MapView:
         self.route = load_scaled_image(settings.TILE_ROUTE, self.scale, fallback)
         self.exit = load_scaled_image(settings.TILE_EXIT, self.scale, fallback)
         self.safe_zone = load_scaled_image(settings.TILE_SAFE_ZONE, self.scale, fallback)
-        self.cost_font = load_font(max(settings.COST_FONT_MIN, self.tile_px // settings.COST_FONT_DIVISOR))
+        self.cost_inset = settings.ROUTE_TILE_BORDER * self.scale + settings.COST_TEXT_GAP
+        self.cost_fonts = [load_font(settings.PIXEL_FONT_SIZE * scale) for scale in range(settings.COST_FONT_MAX_SCALE, 0, -1)]
         self.background = self.render_background()
         self.safe_zone_layer = self.render_safe_zone_layer()
 
@@ -73,11 +74,21 @@ class MapView:
             surface.blit(self.pellet, self.tile_topleft(tile))
         self.draw_costs(surface, route)
 
+    def cost_font(self, labels: list):
+        room = self.tile_px - 2 * self.cost_inset
+        for font in self.cost_fonts:
+            widest = max((font.size(label)[0] for label in labels), default=0)
+            if widest <= room and 2 * font.size("g")[1] <= room:
+                return font
+        return self.cost_fonts[-1]
+
     def draw_costs(self, surface: pygame.Surface, route):
-        latest = {tile: (g, h) for tile, g, h in route}
-        for tile, (g, h) in latest.items():
+        latest = {tile: (f"g={g}", f"h={h}") for tile, g, h in route}
+        font = self.cost_font([label for pair in latest.values() for label in pair])
+        for tile, (g_label, h_label) in latest.items():
             left, top = self.tile_topleft(tile)
-            g_text = self.cost_font.render(f"g={g}", True, settings.COST_G_COLOR)
-            h_text = self.cost_font.render(f"h={h}", True, settings.COST_H_COLOR)
-            surface.blit(g_text, (left + 2, top + 1))
-            surface.blit(h_text, h_text.get_rect(bottomleft=(left + 2, top + self.tile_px - 1)))
+            inner = pygame.Rect(left, top, self.tile_px, self.tile_px).inflate(-2 * self.cost_inset, -2 * self.cost_inset)
+            g_text = font.render(g_label, True, settings.COST_G_COLOR)
+            h_text = font.render(h_label, True, settings.COST_H_COLOR)
+            surface.blit(g_text, inner.topleft)
+            surface.blit(h_text, h_text.get_rect(bottomleft=inner.bottomleft))

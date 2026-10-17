@@ -59,6 +59,9 @@ class PixelFont:
             return surface
         return pygame.transform.scale(surface, (surface.get_width() * self.scale, surface.get_height() * self.scale))
 
+    def size(self, text: str) -> tuple[int, int]:
+        return sum(self.advance(character) for character in text) * self.scale, self.height * self.scale
+
     def advance(self, character: str) -> int:
         area = self.glyph(character)
         return area.width if area is not None else self.space_width
