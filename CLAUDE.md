@@ -34,10 +34,49 @@ Gameplay is being written from scratch by the user. `Player`, `Enemy`, `MenuScen
 
 ## Conventions
 
-- Load assets only through `src/core/resource_loader.py` (`load_image`, `load_sound`, `load_font`, `play_music`). Paths are relative to the asset subfolder, e.g. `load_image("sprites/player.png")`, `load_sound("sfx/jump.wav")`. The loaders are cached and return placeholders on failure. Never call `pygame.image.load` directly.
+- Load assets only through `src/core/resource_loader.py` (`load_image`, `load_sound`, `load_font`, `play_music`). Paths are relative to the asset subfolder, e.g. `load_image("sprites/pacman/eat-up/eat-up-1.png")`, `load_sound("sfx/jump.wav")`. The loaders are cached and return placeholders on failure. Never call `pygame.image.load` directly.
 - Do not create `__init__.py` files. Packages are namespace packages, and imports always use the full module path (`from src.entities.enemy import Enemy`).
 - Use type hints and keep modules small and single-purpose.
 
 ## Assets
 
-The files in `assets/` are generated placeholders (simple shapes, a synth chirp, an arpeggio loop, and pygame's FreeSans font as `default.ttf`). Replace them freely, keeping the same filenames or updating the paths where they are loaded.
+### Character sprites and animation
+
+Every character is animated per direction. Each character must have one animation folder for each of the four directions: up, down, left, right. Never use a single static image for a character, and never flip or rotate one direction's frames to fake another.
+
+Layout under `assets/images/sprites/`:
+
+```text
+pacman/
+  eat-up/      eat-up-1.png    eat-up-2.png    eat-up-3.png
+  eat-down/    eat-down-1.png  ...
+  eat-left/    eat-left-1.png  ...
+  eat-right/   eat-right-1.png ...
+  pacman.aseprite
+ghosts/
+  red-ghost/
+    move-up/      move-up-1.png    move-up-2.png
+    move-down/    move-down-1.png  ...
+    move-left/    move-left-1.png  ...
+    move-right/   move-right-1.png ...
+    selected/     selected-down-.png
+    red-ghost.aseprite
+```
+
+Naming rules:
+
+- Folder: `<action>-<direction>/`. File: `<action>-<direction>-<frame>.png`. Frames are numbered from 1 with no gaps, and play in that order.
+- Pac-Man's action is `eat` (3 frames per direction). Ghosts use `move` (2 frames per direction). Each ghost has its own folder under `ghosts/` (e.g. `red-ghost/`), and new ghosts must follow the same structure.
+- Frame counts differ per character, so animation code must find the frames in a folder instead of hard-coding the count. Sort frames by their number as an integer, not as text, so `10` comes after `9`.
+- An entity picks its animation from its current direction (`up`, `down`, `left`, `right`), advances frames using `dt`, and loops. Keep the last direction when the character stops.
+- `.aseprite` files are the editable sources for the art. The game never loads them, only the exported `.png` frames.
+- `ghosts/red-ghost/selected/` holds an extra state sprite, separate from the movement animations.
+
+### Other sprites
+
+- `items/coin/coin.png`: collectible coin.
+- `tile/wall-tile.png`, `tile/empty-tile.png`: map tiles. `tile/path/path-preview.png`: path preview overlay.
+
+### Placeholders
+
+`fonts/default.ttf` (pygame's FreeSans), `images/ui/button.png`, `sounds/music/bgm.ogg`, and `sounds/sfx/jump.wav` are generated placeholders. Replace them freely, keeping the same filenames or updating the paths where they are loaded.
