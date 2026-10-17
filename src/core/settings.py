@@ -43,6 +43,8 @@ GHOST_MIN_START_DISTANCE = 6
 
 REPEAT_MIN = 2
 REPEAT_MAX = 9
+WAIT_MIN = 1
+WAIT_MAX = 9
 
 DIFFICULTIES = {
     "Easy": {"replan": False, "preview": True, "block_limit": 12},
@@ -116,14 +118,16 @@ UI_BANNER_CAUGHT = "ui/banner-caught.png"
 UI_BANNER_ESCAPED = "ui/banner-escaped.png"
 UI_BANNER_BLOCKED = "ui/banner-blocked.png"
 UI_BLOCKS = {
-    "MOVE": "ui/blocks/move.png",
-    "WAIT": "ui/blocks/wait.png",
-    "REPEAT": "ui/blocks/repeat.png",
-    "END": "ui/blocks/end.png",
+    "WAIT": "ui/plan/blocks/wait.png",
+    "REPEAT": "ui/plan/blocks/repeat-empty.png",
+    "END": "ui/plan/blocks/repeat-end.png",
 }
+UI_MOVE_BLOCKS = {code: f"ui/plan/blocks/move-{name}.png" for code, name in DIRECTION_NAMES.items()}
+COUNT_BOX = (48, 2, 15, 9)
+COUNT_COLOR = (61, 61, 60)
 
 BUTTON_PLACEHOLDER_SIZE = (100, 20)
-BLOCK_PLACEHOLDER_SIZE = (90, 11)
+BLOCK_PLACEHOLDER_SIZE = (64, 16)
 BANNER_PLACEHOLDER_SIZE = (160, 32)
 PANEL_PLACEHOLDER_SIZE = (12, 12)
 

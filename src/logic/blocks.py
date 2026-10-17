@@ -6,14 +6,12 @@ WAIT = "WAIT"
 REPEAT = "REPEAT"
 END = "END"
 
-DIRECTION_WORDS = {"U": "UP", "R": "RIGHT", "D": "DOWN", "L": "LEFT"}
-
 PALETTE = (
     {"type": MOVE, "dir": "U"},
     {"type": MOVE, "dir": "R"},
     {"type": MOVE, "dir": "D"},
     {"type": MOVE, "dir": "L"},
-    {"type": WAIT},
+    {"type": WAIT, "n": settings.WAIT_MIN},
     {"type": REPEAT, "n": settings.REPEAT_MIN},
 )
 
@@ -64,22 +62,17 @@ def depths(program: list) -> list:
     return result
 
 
-def block_text(block: dict) -> str:
-    kind = block["type"]
-    if kind == MOVE:
-        return f"MOVE {DIRECTION_WORDS[block['dir']]}"
-    if kind == REPEAT:
-        return f"REPEAT {block['n']}x"
-    if kind == END:
-        return "_" * 10
-    return kind
+COUNT_RANGES = {
+    REPEAT: (settings.REPEAT_MIN, settings.REPEAT_MAX),
+    WAIT: (settings.WAIT_MIN, settings.WAIT_MAX),
+}
 
 
 def cycle_value(block: dict) -> dict:
-    if block["type"] != REPEAT:
+    if block["type"] not in COUNT_RANGES:
         return block
-    span = settings.REPEAT_MAX - settings.REPEAT_MIN + 1
-    return {**block, "n": settings.REPEAT_MIN + (block["n"] - settings.REPEAT_MIN + 1) % span}
+    low, high = COUNT_RANGES[block["type"]]
+    return {**block, "n": low + (block["n"] - low + 1) % (high - low + 1)}
 
 
 def _clamp(value: int, low: int, high: int) -> int:
@@ -95,7 +88,7 @@ def parse(program: list) -> list:
         if kind == MOVE:
             current.append({"type": MOVE, "dir": block["dir"]})
         elif kind == WAIT:
-            current.append({"type": WAIT})
+            current.append({"type": WAIT, "n": _clamp(block["n"], settings.WAIT_MIN, settings.WAIT_MAX)})
         elif kind == REPEAT:
             node = {"type": REPEAT, "n": _clamp(block["n"], settings.REPEAT_MIN, settings.REPEAT_MAX), "body": []}
             current.append(node)
@@ -118,7 +111,8 @@ def _execute(nodes: list, ops: list):
             yield node["dir"]
         elif kind == WAIT:
             ops[0] = 0
-            yield None
+            for _ in range(node["n"]):
+                yield None
         elif kind == REPEAT:
             for _ in range(node["n"]):
                 yield from _execute(node["body"], ops)

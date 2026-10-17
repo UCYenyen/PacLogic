@@ -173,7 +173,7 @@ class ProgramEditor:
         surface.set_clip(self.program_rect.inflate(-4, -4))
         for index, block in enumerate(shown):
             slot = index + 1 if gap is not None and index >= gap else index
-            top = self.row_top(slot) + (settings.ROW_HEIGHT - self.block_height) // 2
+            top = self.row_top(slot)
             left = self.program_rect.x + settings.PANEL_PADDING + indents[index] * settings.INDENT
             draw_block(surface, block, (left, top))
         surface.set_clip(None)
