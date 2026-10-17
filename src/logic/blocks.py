@@ -2,6 +2,7 @@ from src.core import settings
 from src.logic.sim import idle
 
 MOVE = "MOVE"
+WAIT = "WAIT"
 REPEAT = "REPEAT"
 END = "END"
 
@@ -12,6 +13,7 @@ PALETTE = (
     {"type": MOVE, "dir": "R"},
     {"type": MOVE, "dir": "D"},
     {"type": MOVE, "dir": "L"},
+    {"type": WAIT},
     {"type": REPEAT, "n": settings.REPEAT_MIN},
 )
 
@@ -92,6 +94,8 @@ def parse(program: list) -> list:
         kind = block["type"]
         if kind == MOVE:
             current.append({"type": MOVE, "dir": block["dir"]})
+        elif kind == WAIT:
+            current.append({"type": WAIT})
         elif kind == REPEAT:
             node = {"type": REPEAT, "n": _clamp(block["n"], settings.REPEAT_MIN, settings.REPEAT_MAX), "body": []}
             current.append(node)
@@ -112,6 +116,9 @@ def _execute(nodes: list, ops: list):
         if kind == MOVE:
             ops[0] = 0
             yield node["dir"]
+        elif kind == WAIT:
+            ops[0] = 0
+            yield None
         elif kind == REPEAT:
             for _ in range(node["n"]):
                 yield from _execute(node["body"], ops)
