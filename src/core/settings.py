@@ -84,5 +84,43 @@ PREVIEW_MAP_RECT = (24, 24, 820, 672)
 PLAN_MAP_RECT = (16, 72, 624, 632)
 PLAY_MAP_RECT = (24, 24, 900, 672)
 
+UI_SCALE = 2
+UI_BUTTON_IMAGES = (
+    "ui/button/button-normal.png",
+    "ui/button/button-hover.png",
+    "ui/button/button-pressed.png",
+)
+UI_PANEL = "ui/panel.png"
+UI_PANEL_BORDER = 4
+UI_BANNERS = {
+    "caught": "ui/banner-caught.png",
+    "escaped": "ui/banner-escaped.png",
+    "blocked": "ui/banner-blocked.png",
+}
+UI_BLOCKS = {
+    "MOVE": "ui/blocks/move.png",
+    "WAIT": "ui/blocks/wait.png",
+    "REPEAT": "ui/blocks/repeat.png",
+    "END": "ui/blocks/end.png",
+    "IF": "ui/blocks/if.png",
+    "ELSE": "ui/blocks/else.png",
+    "GOTO": "ui/blocks/goto.png",
+}
+UI_BLOCK_SELECTED = "ui/blocks/selected.png"
+
+BUTTON_PLACEHOLDER_SIZE = (100, 20)
+BLOCK_PLACEHOLDER_SIZE = (90, 11)
+BANNER_PLACEHOLDER_SIZE = (160, 32)
+PANEL_PLACEHOLDER_SIZE = (12, 12)
+
+TEXT_COLOR = WHITE
+TEXT_DIM_COLOR = (150, 156, 180)
+WARNING_COLOR = (255, 80, 80)
+ACCENT_COLOR = (255, 204, 0)
+FONT_SMALL = 16
+FONT_MEDIUM = 22
+FONT_LARGE = 44
+FLASH_DURATION = 3.0
+
 PACMAN_FRAME_DURATION = 0.08
 GHOST_FRAME_DURATION = 0.18
