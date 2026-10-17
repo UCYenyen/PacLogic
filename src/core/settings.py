@@ -10,7 +10,6 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 ASSETS_DIR = ROOT_DIR / "assets"
 FONTS_DIR = ASSETS_DIR / "fonts"
 IMAGES_DIR = ASSETS_DIR / "images"
-SOUNDS_DIR = ASSETS_DIR / "sounds"
 LEVELS_DIR = ASSETS_DIR / "levels"
 DEFAULT_FONT = "default.ttf"
 
@@ -101,16 +100,13 @@ MODAL_DIM_COLOR = (0, 0, 0, 170)
 MENU_LOGO_Y = 200
 MENU_PLAY_Y = 430
 MENU_QUIT_Y = 510
-RESULT_BANNER_Y = 110
+RESULT_TITLE_Y = 110
 RESULT_TEXT_Y = 180
 RESULT_PANEL_RECT = (380, 220, 520, 300)
 RESULT_BUTTON_Y = 600
 RESULT_BUTTON_SPACING = 120
 UI_PANEL = "ui/panel-background.png"
 UI_PANEL_BORDER = 3
-UI_BANNER_CAUGHT = "ui/banner-caught.png"
-UI_BANNER_ESCAPED = "ui/banner-escaped.png"
-UI_BANNER_BLOCKED = "ui/banner-blocked.png"
 UI_BLOCKS = {
     "WAIT": "ui/plan/blocks/wait.png",
     "REPEAT": "ui/plan/blocks/repeat-empty.png",
@@ -122,7 +118,6 @@ COUNT_TYPING_COLOR = (220, 30, 30)
 
 BUTTON_PLACEHOLDER_SIZE = (100, 20)
 BLOCK_PLACEHOLDER_SIZE = (64, 16)
-BANNER_PLACEHOLDER_SIZE = (160, 32)
 PANEL_PLACEHOLDER_SIZE = (12, 12)
 
 TEXT_COLOR = WHITE

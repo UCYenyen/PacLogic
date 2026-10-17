@@ -1,8 +1,5 @@
-import math
-import random
-
 from src.core import settings
-from src.logic.grid import OPPOSITE, Level, bfs_dist, first_step, move
+from src.logic.grid import Level, move
 from src.logic.search import danger_map, plan
 
 RUNNING = "running"
@@ -45,17 +42,6 @@ class PacManBrain:
             return None
         return self.route.pop(0)
 
-    def future_tiles(self, position) -> list:
-        return tiles_along(position, self.route)
-
-
-def tiles_along(start, directions) -> list:
-    tiles = []
-    position = start
-    for direction in directions:
-        position = move(position, direction)
-        tiles.append(position)
-    return tiles
 
 
 def idle(sim, index):
@@ -152,59 +138,3 @@ def score_breakdown(sim: Sim, seconds_left: float) -> list:
 def total_score(breakdown: list) -> int:
     return sum(points for _, points in breakdown)
 
-
-def _ghost_options(sim: Sim, position) -> list:
-    return [(name, tile) for name, tile in sim.level.neighbors(position) if tile not in sim.level.safe_zone]
-
-
-def make_random_walker(seed: int):
-    def random_walker(sim, index):
-        rng = random.Random(seed * 31 + index)
-        while True:
-            options = _ghost_options(sim, sim.ghosts[index])
-            yield rng.choice(options)[0] if options else None
-
-    return random_walker
-
-
-def chaser(sim, index):
-    while True:
-        yield first_step(sim.level, sim.ghosts[index], sim.pac, sim.level.safe_zone)
-
-
-def _arcade_target(sim: Sim, index: int):
-    if index % 2 == 0:
-        return sim.pac
-    target = sim.pac
-    for _ in range(settings.ARCADE_LOOKAHEAD):
-        target = move(target, sim.pac_dir)
-    return target
-
-
-def arcade(sim, index):
-    while True:
-        position = sim.ghosts[index]
-        options = _ghost_options(sim, position)
-        forward = [option for option in options if option[0] != OPPOSITE[sim.facing[index]]]
-        choices = forward or options
-        if not choices:
-            yield None
-            continue
-        target = _arcade_target(sim, index)
-        best = min(choices, key=lambda option: math.dist(option[1], target))
-        yield best[0]
-
-
-def oracle(sim, index):
-    while True:
-        position = sim.ghosts[index]
-        reach = bfs_dist(sim.level, position, sim.level.safe_zone)
-        target = sim.pac
-        for ticks_ahead, tile in enumerate(sim.brain.future_tiles(sim.pac), start=1):
-            if tile in reach and reach[tile] <= ticks_ahead:
-                target = tile
-                break
-        if target == position:
-            yield None
-        else:
-            yield first_step(sim.level, position, target, sim.level.safe_zone)

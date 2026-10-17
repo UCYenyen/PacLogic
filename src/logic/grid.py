@@ -8,7 +8,6 @@ from src.core import settings
 
 DIRECTION_VECTORS = {"U": (0, -1), "R": (1, 0), "D": (0, 1), "L": (-1, 0)}
 ORDERED_DIRECTIONS = tuple((name, DIRECTION_VECTORS[name]) for name in settings.MOVE_ORDER)
-OPPOSITE = {"U": "D", "D": "U", "L": "R", "R": "L"}
 
 WALL = "#"
 FLOOR = "."
@@ -76,26 +75,6 @@ class Level:
         distances = bfs_dist(self, self.goal)
         return frozenset(tile for tile, distance in distances.items() if distance <= settings.SAFE_RADIUS)
 
-    def to_text(self) -> str:
-        rows = []
-        for y in range(self.height):
-            row = []
-            for x in range(self.width):
-                tile = (x, y)
-                if tile in self.walls:
-                    row.append(WALL)
-                elif tile == self.start:
-                    row.append(START)
-                elif tile == self.goal:
-                    row.append(GOAL)
-                elif tile in self.ghosts:
-                    row.append(GHOST)
-                elif tile in self.pellets:
-                    row.append(PELLET)
-                else:
-                    row.append(FLOOR)
-            rows.append("".join(row))
-        return "\n".join(rows)
 
 
 def bfs_dist(level: Level, source: Tile, blocked: frozenset = frozenset()) -> dict:
@@ -111,19 +90,6 @@ def bfs_dist(level: Level, source: Tile, blocked: frozenset = frozenset()) -> di
                 distances[tile] = next_distance
                 queue.append(tile)
     return distances
-
-
-def first_step(level: Level, source: Tile, target: Tile, blocked: frozenset = frozenset()) -> str | None:
-    if source == target:
-        return None
-    distances = bfs_dist(level, target, blocked)
-    if source not in distances:
-        return None
-    wanted = distances[source] - 1
-    for name, tile in level.neighbors(source):
-        if distances.get(tile) == wanted:
-            return name
-    return None
 
 
 def parse_level(text: str, name: str = "level") -> Level:

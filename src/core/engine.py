@@ -9,11 +9,6 @@ from src.scenes.menu_scene import MenuScene
 class Game:
     def __init__(self):
         pygame.init()
-        try:
-            pygame.mixer.init()
-        except pygame.error as exc:
-            print(f"[engine] Audio disabled: {exc}")
-
         self.screen = pygame.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
         pygame.display.set_caption(settings.TITLE)
         self.clock = pygame.time.Clock()

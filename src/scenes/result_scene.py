@@ -1,7 +1,6 @@
 import pygame
 
 from src.core import settings
-from src.core.resource_loader import load_scaled_image
 from src.logic.sim import BLOCKED, CAUGHT, ESCAPED, score_breakdown, total_score
 from src.scenes import menu_scene, plan_scene
 from src.scenes.base_scene import BaseScene
@@ -14,10 +13,10 @@ OUTCOME_TEXT = {
     ESCAPED: "Pac-Man escaped.",
     BLOCKED: "Time ran out. Pac-Man is blocked.",
 }
-OUTCOME_BANNERS = {
-    CAUGHT: settings.UI_BANNER_CAUGHT,
-    ESCAPED: settings.UI_BANNER_ESCAPED,
-    BLOCKED: settings.UI_BANNER_BLOCKED,
+OUTCOME_TITLES = {
+    CAUGHT: "CAUGHT!",
+    ESCAPED: "ESCAPED",
+    BLOCKED: "BLOCKED",
 }
 
 
@@ -25,10 +24,6 @@ class ResultScene(BaseScene):
     def __init__(self, game, session, sim):
         super().__init__(game, session)
         center_x = settings.SCREEN_WIDTH // 2
-        self.banner = load_scaled_image(
-            OUTCOME_BANNERS[sim.status], settings.UI_SCALE, settings.BANNER_PLACEHOLDER_SIZE
-        )
-        self.banner_rect = self.banner.get_rect(center=(center_x, settings.RESULT_BANNER_Y))
         breakdown = score_breakdown(sim, session.seconds_left)
         panel = Panel(settings.RESULT_PANEL_RECT)
         rows = [
@@ -40,6 +35,7 @@ class ResultScene(BaseScene):
             for row, (_, points) in enumerate(breakdown)
         ]
         self.ui = [
+            Label(OUTCOME_TITLES[sim.status], (center_x, settings.RESULT_TITLE_Y), settings.FONT_LARGE, settings.ACCENT_COLOR, "center"),
             Label(OUTCOME_TEXT[sim.status], (center_x, settings.RESULT_TEXT_Y), settings.FONT_MEDIUM, settings.TEXT_DIM_COLOR, "center"),
             panel,
             *rows,
@@ -70,5 +66,4 @@ class ResultScene(BaseScene):
 
     def draw(self, surface: pygame.Surface):
         surface.fill(settings.BG_COLOR)
-        surface.blit(self.banner, self.banner_rect)
         self.draw_ui(surface)

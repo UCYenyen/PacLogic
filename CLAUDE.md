@@ -19,7 +19,7 @@ PacLogic is reverse Pac-Man. Pac-Man is an AI that uses A* to find the shortest 
 All game rules live in `src/logic/` as pure Python with no pygame imports:
 
 - `grid.py`: levels, parsing, validation, BFS distances, safe zone, maze generator.
-- `search.py`: Pac-Man's search (A*, UCS, greedy, BFS) and heuristics.
+- `search.py`: Pac-Man's search (A*, UCS, greedy, BFS), heuristics, and the g(n)/h(n) values shown on the route.
 - `sim.py`: the tick simulation, Pac-Man's brain, scoring, and scripted ghost controllers.
 - `blocks.py`: the block language (parse and run ghost programs).
 
@@ -60,7 +60,7 @@ Scenes, entities, and UI only read from this logic and never change the rules. A
 
 ## Conventions
 
-- Load assets only through `src/core/resource_loader.py` (`load_image`, `load_sound`, `load_font`, `play_music`). Paths are relative to the asset subfolder, e.g. `load_image("sprites/pacman/eat-up/eat-up-1.png")`, `load_sound("sfx/jump.wav")`. The loaders are cached and return placeholders on failure. Never call `pygame.image.load` directly.
+- Load assets only through `src/core/resource_loader.py` (`load_image`, `load_scaled_image`, `load_animation`, `load_font`). Paths are relative to the asset subfolder, e.g. `load_image("sprites/pacman/eat-up/eat-up-1.png")`. The loaders are cached and return placeholders on failure. Never call `pygame.image.load` directly.
 - Do not create `__init__.py` files. Packages are namespace packages, and imports always use the full module path (`from src.entities.enemy import Enemy`).
 - Use type hints for parameters and for functions that return a value, but never write `-> None`.
 - Prefix only module-level helpers with `_`; methods never use a leading underscore.
@@ -107,4 +107,4 @@ Naming rules:
 
 ### Placeholders
 
-`fonts/default.ttf` (pygame's FreeSans), `images/ui/button.png`, `sounds/music/bgm.ogg`, and `sounds/sfx/jump.wav` are generated placeholders. Replace them freely, keeping the same filenames or updating the paths where they are loaded.
+`fonts/default.ttf` is pygame's FreeSans. Replace it freely, keeping the same filename or updating `DEFAULT_FONT` in settings.
