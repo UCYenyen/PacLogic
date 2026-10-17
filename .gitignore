@@ -38,3 +38,6 @@ Thumbs.db
 
 # Local Claude Code settings
 .claude/settings.local.json
+
+# graphify knowledge graph output (regenerated locally)
+graphify-out/
