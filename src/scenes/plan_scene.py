@@ -83,7 +83,7 @@ class PlanScene(BaseScene):
 
     def draw(self, surface: pygame.Surface):
         surface.fill(settings.BG_COLOR)
-        route = self.session.route_tiles if self.session.config["preview"] else ()
+        route = self.session.route if self.session.config["preview"] else ()
         self.board.draw(surface, self.session.start_pellets(), route)
         self.draw_ui(surface)
         if self.selected_ghost is not None:

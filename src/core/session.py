@@ -3,7 +3,8 @@ from functools import lru_cache
 
 from src.core import settings
 from src.logic.grid import generate_level, load_level
-from src.logic.sim import Sim, tiles_along
+from src.logic.search import route_costs
+from src.logic.sim import Sim
 
 LEVEL_CHOICES = tuple(settings.LEVEL_FILES) + tuple(settings.RANDOM_LEVELS)
 AI_CHOICES = tuple(settings.DIFFICULTIES)
@@ -24,7 +25,7 @@ class Session:
         self.time_index = 0
         self.level = None
         self.seed = None
-        self.route_tiles = []
+        self.route = []
         self.optimal_cost = 0
         self.tick_cap = 0
         self.programs = []
@@ -94,7 +95,7 @@ class Session:
         self.level = level
         self.ghost_count = min(self.ghost_count, len(level.ghosts))
         preview = self.new_sim()
-        self.route_tiles = tiles_along(level.start, preview.brain.planned_route)
+        self.route = route_costs(level, level.start, level.pellets, self.pellet_mode, preview.brain.planned_route)
         self.optimal_cost = preview.brain.optimal_cost
         self.tick_cap = preview.tick_cap
         self.clear_programs()

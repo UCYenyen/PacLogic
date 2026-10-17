@@ -53,8 +53,8 @@ class Board:
         for ghost in self.ghosts:
             ghost.update(dt)
 
-    def draw(self, surface: pygame.Surface, pellets=(), route_tiles=()):
-        self.map_view.draw(surface, pellets, route_tiles)
+    def draw(self, surface: pygame.Surface, pellets=(), route=()):
+        self.map_view.draw(surface, pellets, route)
         for ghost in self.ghosts:
             surface.blit(ghost.image, ghost.rect)
         surface.blit(self.player.image, self.player.rect)

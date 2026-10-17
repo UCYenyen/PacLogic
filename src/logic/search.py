@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 
 from src.core import settings
-from src.logic.grid import Level, bfs_dist, manhattan
+from src.logic.grid import Level, bfs_dist, manhattan, move
 
 ASTAR = "astar"
 UCS = "ucs"
@@ -157,6 +157,21 @@ def maze_heuristic(level: Level):
     return h
 
 
+def heuristic_for(level: Level, pellet_mode: bool):
+    return maze_heuristic(level) if pellet_mode else manhattan_heuristic(level)
+
+
+def route_costs(level: Level, position, pellets, pellet_mode: bool, directions, start_g: int = 0) -> list:
+    h = heuristic_for(level, pellet_mode)
+    remaining = frozenset(pellets) if pellet_mode else frozenset()
+    costs = []
+    for g, direction in enumerate(directions, start=start_g + 1):
+        position = move(position, direction)
+        remaining = remaining - {position}
+        costs.append((position, g, h((position, remaining))))
+    return costs
+
+
 def danger_map(level: Level, ghosts) -> dict:
     danger = {}
     radius = settings.DANGER_RADIUS
@@ -182,7 +197,7 @@ def plan(
     start = (position, frozenset(pellets) if pellet_mode else frozenset())
     successors = make_successors(level, blocked, danger)
     is_goal = make_goal_test(level)
-    heuristic = maze_heuristic(level) if pellet_mode else manhattan_heuristic(level)
+    heuristic = heuristic_for(level, pellet_mode)
     if algorithm == UCS:
         return best_first(start, is_goal, successors, zero_heuristic)
     if algorithm == GREEDY:

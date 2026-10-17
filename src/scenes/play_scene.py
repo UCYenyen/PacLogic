@@ -4,6 +4,7 @@ import pygame
 
 from src.core import settings
 from src.logic.blocks import run
+from src.logic.search import route_costs
 from src.logic.sim import RUNNING
 from src.scenes import result_scene
 from src.scenes.base_scene import BaseScene
@@ -53,6 +54,9 @@ class PlayScene(BaseScene):
 
     def draw(self, surface: pygame.Surface):
         surface.fill(settings.BG_COLOR)
-        route = self.sim.brain.future_tiles(self.sim.pac) if self.session.config["preview"] else ()
+        route = ()
+        if self.session.config["preview"]:
+            sim = self.sim
+            route = route_costs(sim.level, sim.pac, sim.pellets, sim.pellet_mode, sim.brain.route, sim.tick)
         self.board.draw(surface, self.sim.pellets, route)
         self.draw_ui(surface)

@@ -1,7 +1,7 @@
 import pygame
 
 from src.core import settings
-from src.core.resource_loader import load_scaled_image
+from src.core.resource_loader import load_font, load_scaled_image
 from src.logic.grid import Level
 
 
@@ -28,6 +28,7 @@ class MapView:
         self.route = load_scaled_image(settings.TILE_ROUTE, self.scale, fallback)
         self.exit = load_scaled_image(settings.TILE_EXIT, self.scale, fallback)
         self.safe_zone = load_scaled_image(settings.TILE_SAFE_ZONE, self.scale, fallback)
+        self.cost_font = load_font(max(settings.COST_FONT_MIN, self.tile_px // settings.COST_FONT_DIVISOR))
         self.background = self.render_background()
         self.safe_zone_layer = self.render_safe_zone_layer()
 
@@ -63,10 +64,20 @@ class MapView:
             return None
         return (position[0] - self.rect.x) // self.tile_px, (position[1] - self.rect.y) // self.tile_px
 
-    def draw(self, surface: pygame.Surface, pellets=(), route_tiles=()):
+    def draw(self, surface: pygame.Surface, pellets=(), route=()):
         surface.blit(self.background, self.rect)
-        for tile in route_tiles:
+        for tile, _, _ in route:
             surface.blit(self.route, self.tile_topleft(tile))
         surface.blit(self.safe_zone_layer, self.rect)
         for tile in pellets:
             surface.blit(self.pellet, self.tile_topleft(tile))
+        self.draw_costs(surface, route)
+
+    def draw_costs(self, surface: pygame.Surface, route):
+        latest = {tile: (g, h) for tile, g, h in route}
+        for tile, (g, h) in latest.items():
+            left, top = self.tile_topleft(tile)
+            g_text = self.cost_font.render(f"g={g}", True, settings.COST_G_COLOR)
+            h_text = self.cost_font.render(f"h={h}", True, settings.COST_H_COLOR)
+            surface.blit(g_text, (left + 2, top + 1))
+            surface.blit(h_text, h_text.get_rect(bottomleft=(left + 2, top + self.tile_px - 1)))
