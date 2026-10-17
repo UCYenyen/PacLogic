@@ -76,7 +76,7 @@ TILE_WALL = "sprites/tile/wall-tile.png"
 TILE_FLOOR = "sprites/tile/empty-tile.png"
 TILE_PELLET = "sprites/items/pellet/pellet.png"
 TILE_ROUTE = "sprites/tile/path/path-preview.png"
-TILE_EXIT = "sprites/tile/exit-tile.png"
+TILE_EXIT = "sprites/tile/pac-man-goal.png"
 TILE_SAFE_ZONE = "sprites/tile/pac-man-safe-zone.png"
 
 PREVIEW_MAP_RECT = (24, 24, 820, 672)

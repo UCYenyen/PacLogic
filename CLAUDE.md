@@ -103,7 +103,7 @@ Naming rules:
 ### Other sprites
 
 - `items/coin/coin.png`: collectible coin.
-- `tile/wall-tile.png`, `tile/empty-tile.png`: map tiles. `tile/path/path-preview.png`: path preview overlay.
+- `tile/wall-tile.png`, `tile/empty-tile.png`: map tiles. `tile/pac-man-goal.png`: the exit. `tile/pac-man-safe-zone.png`: safe-zone overlay. `tile/path/path-preview.png`: path preview overlay.
 
 ### Placeholders
 
