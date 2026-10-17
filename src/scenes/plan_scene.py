@@ -20,7 +20,8 @@ class PlanScene(BaseScene):
     def __init__(self, game, session):
         super().__init__(game)
         self.session = session
-        self.board = Board(session.level, settings.PLAN_MAP_RECT, session.ghost_count)
+        self.overview_board = Board(session.level, settings.PLAN_OVERVIEW_MAP_RECT, session.ghost_count)
+        self.edit_board = Board(session.level, settings.PLAN_MAP_RECT, session.ghost_count)
         self.programs = session.programs
         self.limit = session.config["block_limit"]
         self.time_left = float(session.planning_time)
@@ -42,28 +43,27 @@ class PlanScene(BaseScene):
             )
             for index in range(len(blocks.PALETTE))
         ]
-        map_center_x = pygame.Rect(settings.PLAN_MAP_RECT).centerx
         self.palette_panel = Panel(self.palette_rect)
         self.program_panel = Panel(self.program_rect)
-        self.timer = Label("", (map_center_x, 36), settings.FONT_LARGE, anchor="center")
+        self.timer = Label("", (0, 36), settings.FONT_LARGE, anchor="center")
         self.header = Label("", (self.palette_rect.x, 28), settings.FONT_MEDIUM, settings.ACCENT_COLOR)
         self.counter = Label("", (self.program_rect.right, 28), settings.FONT_MEDIUM, anchor="topright")
         self.hint = Label(
             "Click a ghost to program it",
-            ((self.palette_rect.x + self.program_rect.right) // 2, self.program_rect.centery),
+            (self.program_rect.right, 28),
             settings.FONT_MEDIUM,
             settings.TEXT_DIM_COLOR,
-            "center",
+            "topright",
         )
         self.goto_hint = Label(
             "Click a map tile to set the GOTO target (Esc cancels)",
-            (map_center_x, 690),
+            (pygame.Rect(settings.PLAN_MAP_RECT).centerx, 690),
             settings.FONT_SMALL,
             settings.ACCENT_COLOR,
             "center",
         )
         self.flash = FlashMessage((760, 672), settings.FONT_SMALL)
-        self.lock_button = ImageButton((self.program_rect.centerx, 672), self.lock, "Lock & Run")
+        self.lock_button = ImageButton(settings.PLAN_LOCK_BUTTON_POS, self.lock, "Lock & Run")
         self.ui = [
             self.timer,
             self.header,
@@ -78,6 +78,10 @@ class PlanScene(BaseScene):
         self.refresh_labels()
 
     @property
+    def board(self) -> Board:
+        return self.overview_board if self.selected_ghost is None else self.edit_board
+
+    @property
     def current_program(self) -> list:
         return self.programs[self.selected_ghost]
 
@@ -85,7 +89,8 @@ class PlanScene(BaseScene):
         self.selected_ghost = index
         self.armed_goto = None
         self.scroll = 0
-        self.board.select_ghost(index)
+        self.overview_board.select_ghost(index)
+        self.edit_board.select_ghost(index)
         self.refresh_labels()
 
     def refresh_labels(self):
@@ -93,6 +98,7 @@ class PlanScene(BaseScene):
         for component in (self.header, self.counter, self.palette_panel, self.program_panel):
             component.visible = editing
         self.hint.visible = not editing
+        self.timer.position = (self.board.map_view.area.centerx, 36)
         self.goto_hint.visible = self.armed_goto is not None
         seconds = max(0, math.ceil(self.time_left))
         color = settings.WARNING_COLOR if self.time_left < settings.TIMER_WARNING_SECONDS else settings.TEXT_COLOR

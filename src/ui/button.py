@@ -16,9 +16,10 @@ class ImageButton:
         images: tuple = settings.UI_BUTTON_IMAGES,
         font_size: int = settings.FONT_MEDIUM,
         fallback_size: tuple[int, int] = settings.BUTTON_PLACEHOLDER_SIZE,
+        scale: int = settings.UI_SCALE,
     ):
         self.normal, self.hover, self.pressed_image = (
-            load_scaled_image(path, settings.UI_SCALE, fallback_size) for path in images
+            load_scaled_image(path, scale, fallback_size) for path in images
         )
         self.rect = self.normal.get_rect(**{anchor: position})
         self.on_click = on_click

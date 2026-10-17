@@ -20,7 +20,7 @@ python main.py
 
 ## How to play
 
-1. **Menu**: left click an option to go forward, right click to go back. Pick the level, Pac-Man AI, ghost count, win mode, and planning time, then press Start.
+1. **Menu**: press PLAY to open Game setup. Use the left and right arrows beside each option to pick the level, Pac-Man AI, ghost count, win mode, and planning time, then press Continue.
 2. **Preview**: check the map and level info, then press Start planning.
 3. **Plan**: click a ghost on the map to program it.
    - Click a palette block to append it, or drag it between rows to insert it.

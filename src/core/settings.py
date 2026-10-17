@@ -77,11 +77,13 @@ TILE_FLOOR = "sprites/tile/empty-tile.png"
 TILE_PELLET = "sprites/items/pellet/pellet.png"
 TILE_ROUTE = "sprites/tile/path/path-preview.png"
 TILE_EXIT = "sprites/tile/exit-tile.png"
-TILE_SAFE_ZONE = "sprites/tile/safe-zone.png"
+TILE_SAFE_ZONE = "sprites/tile/pac-man-safe-zone.png"
 TILE_GOTO_TARGET = "sprites/tile/goto-target.png"
 
 PREVIEW_MAP_RECT = (24, 24, 820, 672)
-PLAN_MAP_RECT = (16, 72, 624, 632)
+PLAN_MAP_RECT = (16, 72, 680, 632)
+PLAN_OVERVIEW_MAP_RECT = (16, 64, 1040, 640)
+PLAN_LOCK_BUTTON_POS = (1164, 672)
 PLAY_MAP_RECT = (24, 24, 900, 672)
 
 UI_SCALE = 2
@@ -90,6 +92,18 @@ UI_BUTTON_IMAGES = (
     "ui/button/button-hover.png",
     "ui/button/button-pressed.png",
 )
+MENU_SCALE = 4
+MENU_LOGO = "ui/main-menu/pac-logic-logo.png"
+MENU_PLAY_BUTTON = "ui/main-menu/play-button.png"
+MENU_QUIT_BUTTON = "ui/main-menu/quit-button.png"
+MENU_OPTION_BOX = "ui/main-menu/option-box.png"
+MENU_ARROW_LEFT = "ui/main-menu/arrow-left.png"
+MENU_ARROW_RIGHT = "ui/main-menu/arrow-right.png"
+ARROW_PLACEHOLDER_SIZE = (12, 20)
+OPTION_PLACEHOLDER_SIZE = (130, 20)
+ARROW_GAP = 12
+SETUP_MODAL_RECT = (360, 100, 560, 540)
+MODAL_DIM_COLOR = (0, 0, 0, 170)
 UI_PANEL = "ui/panel.png"
 UI_PANEL_BORDER = 4
 UI_BANNERS = {
@@ -133,8 +147,8 @@ KEY_CANCEL = "escape"
 
 INFO_PANEL_RECT = (868, 24, 388, 672)
 HUD_PANEL_RECT = (948, 24, 308, 672)
-PALETTE_RECT = (656, 72, 212, 560)
-PROGRAM_RECT = (884, 72, 380, 560)
+PALETTE_RECT = (704, 72, 208, 560)
+PROGRAM_RECT = (920, 72, 344, 560)
 PANEL_PADDING = 12
 BLOCK_GAP = 6
 ROW_HEIGHT = 26

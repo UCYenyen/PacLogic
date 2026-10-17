@@ -30,6 +30,7 @@ class MapView:
         self.safe_zone = load_scaled_image(settings.TILE_SAFE_ZONE, self.scale, fallback)
         self.goto_target = load_scaled_image(settings.TILE_GOTO_TARGET, self.scale, fallback)
         self.background = self._render_background()
+        self.safe_zone_layer = self._render_safe_zone_layer()
 
     def _local(self, tile) -> tuple[int, int]:
         return tile[0] * self.tile_px, tile[1] * self.tile_px
@@ -40,6 +41,10 @@ class MapView:
             for x in range(self.level.width):
                 tile = (x, y)
                 surface.blit(self.wall if tile in self.level.walls else self.floor, self._local(tile))
+        return surface
+
+    def _render_safe_zone_layer(self) -> pygame.Surface:
+        surface = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         for tile in self.level.safe_zone:
             surface.blit(self.safe_zone, self._local(tile))
         surface.blit(self.exit, self._local(self.level.goal))
@@ -63,6 +68,7 @@ class MapView:
         surface.blit(self.background, self.rect)
         for tile in route_tiles:
             surface.blit(self.route, self.tile_topleft(tile))
+        surface.blit(self.safe_zone_layer, self.rect)
         for tile in pellets:
             surface.blit(self.pellet, self.tile_topleft(tile))
         for tile in goto_targets:
