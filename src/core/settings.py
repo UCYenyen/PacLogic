@@ -117,7 +117,6 @@ UI_BANNER_ESCAPED = "ui/banner-escaped.png"
 UI_BANNER_BLOCKED = "ui/banner-blocked.png"
 UI_BLOCKS = {
     "MOVE": "ui/blocks/move.png",
-    "WAIT": "ui/blocks/wait.png",
     "REPEAT": "ui/blocks/repeat.png",
     "END": "ui/blocks/end.png",
 }
