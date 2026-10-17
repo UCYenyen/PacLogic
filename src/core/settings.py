@@ -36,6 +36,8 @@ PAC_START_DIRECTION = "R"
 GHOST_START_DIRECTION = "U"
 ARCADE_LOOKAHEAD = 4
 
+LEVEL_FILES = {"Easy": "easy.txt", "Medium": "medium.txt", "Hard": "hard.txt"}
+RANDOM_LEVELS = {"Random 15x15": (15, 15, 4), "Random 28x31": (28, 31, 8)}
 BRAID_CHANCE = 0.15
 GHOST_MIN_START_DISTANCE = 6
 
