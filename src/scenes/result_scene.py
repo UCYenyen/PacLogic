@@ -2,7 +2,7 @@ import pygame
 
 from src.core import settings
 from src.core.resource_loader import load_scaled_image
-from src.logic.sim import score_breakdown, total_score
+from src.logic.sim import BLOCKED, CAUGHT, ESCAPED, score_breakdown, total_score
 from src.scenes import menu_scene, plan_scene, play_scene
 from src.scenes.base_scene import BaseScene
 from src.ui.button import ImageButton
@@ -10,9 +10,9 @@ from src.ui.label import Label
 from src.ui.panel import Panel
 
 OUTCOME_TEXT = {
-    "caught": "The ghosts caught Pac-Man!",
-    "escaped": "Pac-Man escaped.",
-    "blocked": "Time ran out. Pac-Man is blocked.",
+    CAUGHT: "The ghosts caught Pac-Man!",
+    ESCAPED: "Pac-Man escaped.",
+    BLOCKED: "Time ran out. Pac-Man is blocked.",
 }
 
 

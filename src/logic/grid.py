@@ -18,17 +18,19 @@ GHOST = "G"
 PELLET = "o"
 LEGEND = {WALL, FLOOR, START, GOAL, GHOST, PELLET}
 
+Tile = tuple[int, int]
+
 
 class LevelError(ValueError):
     pass
 
 
-def step(position: tuple[int, int], direction: str) -> tuple[int, int]:
+def move(position: Tile, direction: str) -> Tile:
     dx, dy = DIRECTION_VECTORS[direction]
     return position[0] + dx, position[1] + dy
 
 
-def manhattan(a: tuple[int, int], b: tuple[int, int]) -> int:
+def manhattan(a: Tile, b: Tile) -> int:
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 
@@ -38,18 +40,18 @@ class Level:
     width: int
     height: int
     walls: frozenset
-    start: tuple[int, int]
-    goal: tuple[int, int]
+    start: Tile
+    goal: Tile
     ghosts: tuple
     pellets: frozenset
 
-    def in_bounds(self, position: tuple[int, int]) -> bool:
+    def in_bounds(self, position: Tile) -> bool:
         return 0 <= position[0] < self.width and 0 <= position[1] < self.height
 
-    def passable(self, position: tuple[int, int]) -> bool:
+    def passable(self, position: Tile) -> bool:
         return self.in_bounds(position) and position not in self.walls
 
-    def neighbors(self, position: tuple[int, int]):
+    def neighbors(self, position: Tile):
         x, y = position
         for name, (dx, dy) in ORDERED_DIRECTIONS:
             tile = (x + dx, y + dy)
@@ -96,7 +98,7 @@ class Level:
         return "\n".join(rows)
 
 
-def bfs_dist(level: Level, source: tuple[int, int], blocked: frozenset = frozenset()) -> dict:
+def bfs_dist(level: Level, source: Tile, blocked: frozenset = frozenset()) -> dict:
     if not level.passable(source) or source in blocked:
         return {}
     distances = {source: 0}
@@ -111,7 +113,7 @@ def bfs_dist(level: Level, source: tuple[int, int], blocked: frozenset = frozens
     return distances
 
 
-def first_step(level: Level, source: tuple[int, int], target: tuple[int, int], blocked: frozenset = frozenset()) -> str | None:
+def first_step(level: Level, source: Tile, target: Tile, blocked: frozenset = frozenset()) -> str | None:
     if source == target:
         return None
     distances = bfs_dist(level, target, blocked)
@@ -223,7 +225,7 @@ def _carve_maze(width: int, height: int, rng: random.Random) -> set:
     return floor
 
 
-def _farthest(distances: dict) -> tuple[int, int]:
+def _farthest(distances: dict) -> Tile:
     return max(distances, key=lambda tile: (distances[tile], -tile[1], -tile[0]))
 
 

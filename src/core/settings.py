@@ -78,12 +78,12 @@ TILE_PELLET = "sprites/items/pellet/pellet.png"
 TILE_ROUTE = "sprites/tile/path/path-preview.png"
 TILE_EXIT = "sprites/tile/exit-tile.png"
 TILE_SAFE_ZONE = "sprites/tile/pac-man-safe-zone.png"
-TILE_GOTO_TARGET = "sprites/tile/goto-target.png"
 
 PREVIEW_MAP_RECT = (24, 24, 820, 672)
 PLAN_MAP_RECT = (16, 72, 680, 632)
 PLAN_OVERVIEW_MAP_RECT = (16, 64, 1040, 640)
 PLAN_LOCK_BUTTON_POS = (1164, 672)
+PLAN_TITLE_Y = 36
 PLAY_MAP_RECT = (24, 24, 900, 672)
 
 UI_SCALE = 2
@@ -118,9 +118,7 @@ UI_BLOCKS = {
     "END": "ui/blocks/end.png",
     "IF": "ui/blocks/if.png",
     "ELSE": "ui/blocks/else.png",
-    "GOTO": "ui/blocks/goto.png",
 }
-UI_BLOCK_SELECTED = "ui/blocks/selected.png"
 
 BUTTON_PLACEHOLDER_SIZE = (100, 20)
 BLOCK_PLACEHOLDER_SIZE = (90, 11)

@@ -26,10 +26,15 @@ python main.py
    - Click a palette block to append it, or drag it between rows to insert it.
    - Drag a program block to reorder it. Drag it out of the panel or right click it to delete it.
    - Click REPEAT or IF PAC WITHIN to cycle its number.
-   - Click a GOTO block, then click a map tile to set its target (Esc cancels).
    - Press Lock & Run, or wait for the timer to reach 0.
 4. **Run**: SPACE pauses, F toggles speed between x1 and x4.
 5. **Result**: Replay, edit the programs, or go back to the menu.
+
+## Design notes
+
+- **Ghosts move before Pac-Man each tick.** A ghost that steps onto Pac-Man's next tile catches him, so a well-timed program can cut him off instead of only chasing him.
+- **Ghosts can't enter the safe zone.** Without it, a ghost could sit on the exit and Pac-Man could never escape. The safe zone forces the player to catch him on the way there.
+- **Movement is per tick, not `speed * dt`.** The rules run in whole ticks so A* and the ghost programs stay exact and repeatable. Sprites only slide between tiles for display.
 
 ## Project structure
 

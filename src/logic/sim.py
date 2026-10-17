@@ -2,7 +2,7 @@ import math
 import random
 
 from src.core import settings
-from src.logic.grid import OPPOSITE, Level, bfs_dist, first_step, step
+from src.logic.grid import OPPOSITE, Level, bfs_dist, first_step, move
 from src.logic.search import danger_map, plan
 
 RUNNING = "running"
@@ -53,7 +53,7 @@ def tiles_along(start, directions) -> list:
     tiles = []
     position = start
     for direction in directions:
-        position = step(position, direction)
+        position = move(position, direction)
         tiles.append(position)
     return tiles
 
@@ -97,13 +97,13 @@ class Sim:
             if direction is None:
                 continue
             self.facing[index] = direction
-            target = step(self.ghosts[index], direction)
+            target = move(self.ghosts[index], direction)
             if self.ghost_can_enter(target):
                 self.ghosts[index] = target
-        move = self.brain.next_move(self.pac, self.pellets, tuple(self.ghosts))
-        if move is not None:
-            self.pac_dir = move
-            target = step(self.pac, move)
+        pac_move = self.brain.next_move(self.pac, self.pellets, tuple(self.ghosts))
+        if pac_move is not None:
+            self.pac_dir = pac_move
+            target = move(self.pac, pac_move)
             if self.level.passable(target):
                 self.pac = target
         self.tick += 1
@@ -177,7 +177,7 @@ def _arcade_target(sim: Sim, index: int):
         return sim.pac
     target = sim.pac
     for _ in range(settings.ARCADE_LOOKAHEAD):
-        target = step(target, sim.pac_dir)
+        target = move(target, sim.pac_dir)
     return target
 
 
