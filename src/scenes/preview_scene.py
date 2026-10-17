@@ -32,8 +32,8 @@ class PreviewScene(BaseScene):
             panel,
             Label(session.level_choice, (left, panel.rect.y + 24), settings.FONT_LARGE, settings.ACCENT_COLOR),
             *(Label(text, (left, panel.rect.y + 100 + row * 36)) for row, text in enumerate(lines)),
-            ImageButton((panel.rect.centerx, panel.rect.bottom - 120), self.start_planning, "Start planning"),
-            ImageButton((panel.rect.centerx, panel.rect.bottom - 60), self.back, "Back"),
+            ImageButton((panel.rect.centerx, panel.rect.bottom - 140), self.start_planning, "Start planning"),
+            ImageButton((panel.rect.centerx, panel.rect.bottom - 64), self.back, "Back"),
         ]
 
     def start_planning(self):

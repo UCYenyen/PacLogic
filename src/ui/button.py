@@ -16,7 +16,7 @@ class ImageButton(Component):
         images: tuple = settings.UI_BUTTON_IMAGES,
         font_size: int = settings.FONT_MEDIUM,
         fallback_size: tuple[int, int] = settings.BUTTON_PLACEHOLDER_SIZE,
-        scale: int = settings.UI_SCALE,
+        scale: int = settings.UI_BUTTON_SCALE,
     ):
         self.normal, self.hover, self.pressed_image = (
             load_scaled_image(path, scale, fallback_size) for path in images

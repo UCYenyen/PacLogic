@@ -82,16 +82,13 @@ TILE_SAFE_ZONE = "sprites/tile/pac-man-safe-zone.png"
 PREVIEW_MAP_RECT = (24, 24, 820, 672)
 PLAN_MAP_RECT = (16, 72, 680, 632)
 PLAN_OVERVIEW_MAP_RECT = (16, 64, 1040, 640)
-PLAN_LOCK_BUTTON_POS = (1164, 672)
+PLAN_LOCK_BUTTON_POS = (1154, 672)
 PLAN_TITLE_Y = 36
 PLAY_MAP_RECT = (24, 24, 900, 672)
 
 UI_SCALE = 2
-UI_BUTTON_IMAGES = (
-    "ui/button/button-normal.png",
-    "ui/button/button-hover.png",
-    "ui/button/button-pressed.png",
-)
+UI_BUTTON_IMAGES = ("ui/button.png",) * 3
+UI_BUTTON_SCALE = 1
 MENU_SCALE = 4
 MENU_LOGO = "ui/main-menu/pac-logic-logo.png"
 MENU_PLAY_BUTTON = "ui/main-menu/play-button.png"
@@ -112,10 +109,8 @@ RESULT_TEXT_Y = 180
 RESULT_PANEL_RECT = (380, 220, 520, 300)
 RESULT_BUTTON_Y = 600
 RESULT_BUTTON_SPACING = 120
-UI_PANEL = "ui/panel.png"
-UI_PANEL_BORDER = 4
-UI_BLOCK_PANEL = "ui/plan/blocks/block-coding-panel-background.png"
-UI_BLOCK_PANEL_BORDER = 3
+UI_PANEL = "ui/panel-background.png"
+UI_PANEL_BORDER = 3
 UI_BANNER_CAUGHT = "ui/banner-caught.png"
 UI_BANNER_ESCAPED = "ui/banner-escaped.png"
 UI_BANNER_BLOCKED = "ui/banner-blocked.png"

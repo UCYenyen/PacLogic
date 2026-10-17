@@ -82,6 +82,7 @@ class MenuScene(BaseScene):
             anchor=anchor,
             images=(image,) * 3,
             fallback_size=settings.ARROW_PLACEHOLDER_SIZE,
+            scale=settings.UI_SCALE,
         )
 
     def open_setup(self):
