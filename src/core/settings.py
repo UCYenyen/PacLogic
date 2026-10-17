@@ -65,5 +65,12 @@ ART_SCALE = 3
 
 DIRECTION_NAMES = {"U": "up", "R": "right", "D": "down", "L": "left"}
 
+PACMAN_SPRITE_DIR = "sprites/pacman"
+PACMAN_ACTION = "eat"
+GHOST_SPRITE_DIR = "sprites/ghosts"
+GHOST_ACTION = "move"
+GHOST_SELECTED_FOLDER = "selected"
+GHOST_ORDER = ("red-ghost", "blue-ghost", "pink-ghost", "orange-ghost")
+
 PACMAN_FRAME_DURATION = 0.08
 GHOST_FRAME_DURATION = 0.18

@@ -66,6 +66,11 @@ def load_animation(folder: str, scale: int = settings.ART_SCALE) -> tuple:
     )
 
 
+def has_frames(folder: str) -> bool:
+    directory = settings.IMAGES_DIR / folder
+    return directory.is_dir() and any(directory.glob("*.png"))
+
+
 def list_folders(relative_path: str) -> list:
     directory = settings.IMAGES_DIR / relative_path
     if not directory.is_dir():
