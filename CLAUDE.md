@@ -6,7 +6,24 @@ Guidance for Claude Code when working in this repository.
 
 PacLogic: a 2D Pygame game (Python 3.11+, `pygame-ce`). Entry point is `main.py`, which builds `src.core.engine.Game` and calls `run()`.
 
-Gameplay is being written from scratch by the user. `Player`, `Enemy`, `MenuScene`, `PlayScene`, and `HUD` are intentionally empty stubs. Do not add gameplay logic unless asked.
+### Game concept
+
+PacLogic is reverse Pac-Man. Pac-Man is an AI that uses A* to find the shortest route to an exit tile (and, in pellet mode, eats every pellet first). The player controls 1 to 4 ghosts, but only by writing small drag-and-drop block programs before the round starts. Once the round runs, the programs act alone, and the ghosts win by catching Pac-Man before he escapes.
+
+- The game runs in discrete ticks, not free movement. Every tick, each ghost acts first, then Pac-Man takes one step.
+- Ghosts can never enter the safe zone: every tile within maze distance `SAFE_RADIUS` of the exit.
+- Outcomes: caught (ghosts win), escaped (Pac-Man wins), or blocked (the tick cap ran out).
+
+### Logic layer
+
+All game rules live in `src/logic/` as pure Python with no pygame imports:
+
+- `grid.py`: levels, parsing, validation, BFS distances, safe zone, maze generator.
+- `search.py`: Pac-Man's search (A*, UCS, greedy, BFS) and heuristics.
+- `sim.py`: the tick simulation, Pac-Man's brain, scoring, and scripted ghost controllers.
+- `blocks.py`: the block language (parse and run ghost programs).
+
+Scenes, entities, and UI only read from this logic and never change the rules. All tuning values live in `src/core/settings.py`, which must stay free of pygame imports so the logic layer can use it.
 
 ## Commands
 
