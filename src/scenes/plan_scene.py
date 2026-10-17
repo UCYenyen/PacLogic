@@ -14,8 +14,7 @@ from src.ui.program_editor import ProgramEditor
 
 class PlanScene(BaseScene):
     def __init__(self, game, session):
-        super().__init__(game)
-        self.session = session
+        super().__init__(game, session)
         self.overview_board = Board(session.level, settings.PLAN_OVERVIEW_MAP_RECT, session.ghost_count)
         self.edit_board = Board(session.level, settings.PLAN_MAP_RECT, session.ghost_count)
         self.programs = session.programs

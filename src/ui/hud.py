@@ -1,13 +1,14 @@
 import pygame
 
 from src.core import settings
+from src.ui.component import Component
 from src.ui.label import Label
 from src.ui.panel import Panel
 
 STAT_ROWS = 9
 
 
-class HUD:
+class HUD(Component):
     def __init__(self, rect=settings.HUD_PANEL_RECT):
         self.panel = Panel(rect)
         left = self.panel.rect.x + 20
@@ -36,12 +37,6 @@ class HUD:
         ]
         for label, text in zip(self.rows, texts):
             label.set_text(text, settings.WARNING_COLOR if text == "PAUSED" else settings.TEXT_COLOR)
-
-    def handle_event(self, event: pygame.event.Event) -> bool:
-        return False
-
-    def update(self, dt: float):
-        pass
 
     def draw(self, surface: pygame.Surface):
         self.panel.draw(surface)

@@ -2,6 +2,7 @@ import pygame
 
 from src.core import settings
 from src.core.resource_loader import load_scaled_image
+from src.ui.component import Component
 
 
 def _scaled_piece(source: pygame.Surface, area: tuple, size: tuple) -> pygame.Surface | None:
@@ -37,18 +38,11 @@ def nine_slice(source: pygame.Surface, border: int, size: tuple) -> pygame.Surfa
     return result
 
 
-class Panel:
+class Panel(Component):
     def __init__(self, rect, image_path: str = settings.UI_PANEL, border: int = settings.UI_PANEL_BORDER):
         source = load_scaled_image(image_path, settings.UI_SCALE, settings.PANEL_PLACEHOLDER_SIZE)
         self.rect = pygame.Rect(rect)
-        self.visible = True
         self.surface = nine_slice(source, border * settings.UI_SCALE, self.rect.size)
-
-    def handle_event(self, event: pygame.event.Event) -> bool:
-        return False
-
-    def update(self, dt: float):
-        pass
 
     def draw(self, surface: pygame.Surface):
         if self.visible:

@@ -11,8 +11,7 @@ from src.ui.panel import Panel
 
 class PreviewScene(BaseScene):
     def __init__(self, game, session):
-        super().__init__(game)
-        self.session = session
+        super().__init__(game, session)
         level = session.level
         self.board = Board(level, settings.PREVIEW_MAP_RECT, session.ghost_count)
         panel = Panel(settings.INFO_PANEL_RECT)

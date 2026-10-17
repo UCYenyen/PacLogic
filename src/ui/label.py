@@ -2,9 +2,10 @@ import pygame
 
 from src.core import settings
 from src.core.resource_loader import load_font
+from src.ui.component import Component
 
 
-class Label:
+class Label(Component):
     def __init__(self, text: str, position, size: int = settings.FONT_MEDIUM, color=settings.TEXT_COLOR, anchor: str = "topleft"):
         self.font = load_font(size)
         self.position = position
@@ -12,7 +13,6 @@ class Label:
         self.text = None
         self.color = color
         self.image = None
-        self.visible = True
         self.set_text(text)
 
     def set_text(self, text: str, color=None):
@@ -26,12 +26,6 @@ class Label:
     @property
     def rect(self) -> pygame.Rect:
         return self.image.get_rect(**{self.anchor: self.position})
-
-    def handle_event(self, event: pygame.event.Event) -> bool:
-        return False
-
-    def update(self, dt: float):
-        pass
 
     def draw(self, surface: pygame.Surface):
         if self.visible:

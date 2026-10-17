@@ -13,8 +13,7 @@ from src.ui.hud import HUD
 
 class PlayScene(BaseScene):
     def __init__(self, game, session):
-        super().__init__(game)
-        self.session = session
+        super().__init__(game, session)
         self.sim = session.new_sim([partial(run, tree) for tree in session.trees])
         self.board = Board(session.level, settings.PLAY_MAP_RECT, session.ghost_count)
         self.hud = HUD()

@@ -17,8 +17,7 @@ OPTIONS = ("level", "ai", "ghosts", "mode", "time")
 
 class MenuScene(BaseScene):
     def __init__(self, game, session):
-        super().__init__(game)
-        self.session = session
+        super().__init__(game, session)
         self.cancel_key = pygame.key.key_code(settings.KEY_CANCEL)
         center_x = settings.SCREEN_WIDTH // 2
         self.main_ui = [

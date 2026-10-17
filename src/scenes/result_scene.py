@@ -18,8 +18,7 @@ OUTCOME_TEXT = {
 
 class ResultScene(BaseScene):
     def __init__(self, game, session, sim):
-        super().__init__(game)
-        self.session = session
+        super().__init__(game, session)
         center_x = settings.SCREEN_WIDTH // 2
         self.banner = load_scaled_image(
             settings.UI_BANNERS[sim.status], settings.UI_SCALE, settings.BANNER_PLACEHOLDER_SIZE

@@ -22,15 +22,12 @@ class Game:
         self.scene: BaseScene = MenuScene(self, self.session)
 
     def change_scene(self, scene: BaseScene) -> None:
-        self.scene.on_exit()
         self.scene = scene
-        self.scene.on_enter()
 
     def quit(self) -> None:
         self.running = False
 
     def run(self) -> None:
-        self.scene.on_enter()
         while self.running:
             dt = min(self.clock.tick(settings.FPS) / 1000.0, settings.MAX_DT)
             self._handle_events()

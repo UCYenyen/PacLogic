@@ -2,9 +2,10 @@ import pygame
 
 from src.core import settings
 from src.core.resource_loader import load_scaled_image
+from src.ui.component import Component
 
 
-class Image:
+class Image(Component):
     def __init__(
         self,
         path: str,
@@ -15,13 +16,6 @@ class Image:
     ):
         self.image = load_scaled_image(path, scale, fallback_size)
         self.rect = self.image.get_rect(**{anchor: position})
-        self.visible = True
-
-    def handle_event(self, event: pygame.event.Event) -> bool:
-        return False
-
-    def update(self, dt: float):
-        pass
 
     def draw(self, surface: pygame.Surface):
         if self.visible:

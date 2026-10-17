@@ -4,15 +4,10 @@ import pygame
 
 
 class BaseScene(ABC):
-    def __init__(self, game) -> None:
+    def __init__(self, game, session) -> None:
         self.game = game
+        self.session = session
         self.ui = []
-
-    def on_enter(self) -> None:
-        pass
-
-    def on_exit(self) -> None:
-        pass
 
     def forward_event(self, event: pygame.event.Event) -> bool:
         handled = False

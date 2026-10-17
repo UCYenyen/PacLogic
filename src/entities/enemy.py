@@ -1,9 +1,6 @@
-import pygame
-
 from src.core import settings
 from src.core.resource_loader import has_frames, list_folders, load_animation
-from src.entities.animator import load_directional_animator
-from src.entities.player import lerp_tile
+from src.entities.character import Character
 
 
 def ghost_art_ready(name: str) -> bool:
@@ -27,11 +24,9 @@ def ghost_art_folders(count: int) -> tuple[list, list]:
     return folders, missing
 
 
-class Enemy(pygame.sprite.Sprite):
+class Enemy(Character):
     def __init__(self, folder: str, scale: int):
-        super().__init__()
-        self.folder = folder
-        self.animator = load_directional_animator(
+        super().__init__(
             folder,
             settings.GHOST_ACTION,
             scale,
@@ -40,13 +35,8 @@ class Enemy(pygame.sprite.Sprite):
         )
         self.selected_image = load_animation(f"{folder}/{settings.GHOST_SELECTED_FOLDER}", scale)[0]
         self.selected = False
-        self.image = self.animator.image
-        self.rect = self.image.get_rect()
-
-    def follow(self, previous_tile, tile, direction: str | None, progress: float, map_view):
-        self.animator.set_direction(direction)
-        self.rect.center = map_view.tile_center(*lerp_tile(previous_tile, tile, progress))
 
     def update(self, dt: float):
-        self.animator.update(dt)
-        self.image = self.selected_image if self.selected else self.animator.image
+        super().update(dt)
+        if self.selected:
+            self.image = self.selected_image

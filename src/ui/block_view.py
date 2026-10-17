@@ -2,7 +2,7 @@ import pygame
 
 from src.core import settings
 from src.core.resource_loader import load_font, load_scaled_image
-from src.logic.blocks import block_text
+from src.logic.blocks import MOVE, block_text
 
 
 def block_image(kind: str) -> pygame.Surface:
@@ -10,7 +10,7 @@ def block_image(kind: str) -> pygame.Surface:
 
 
 def block_size() -> tuple[int, int]:
-    return block_image("MOVE").get_size()
+    return block_image(MOVE).get_size()
 
 
 def draw_block(surface: pygame.Surface, block: dict, topleft) -> pygame.Rect:
