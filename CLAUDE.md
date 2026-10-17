@@ -33,11 +33,20 @@ Scenes, entities, and UI only read from this logic and never change the rules. A
 
 ## Architecture
 
-- **Game loop** (`src/core/engine.py`): `Game` owns the window, clock, and the active scene. Each frame: compute `dt` in seconds (clamped to 0.05), forward events to `scene.handle_event`, then `scene.update(dt)`, then `scene.draw(screen)`. The game starts in `MenuScene`.
-- **Scenes** (`src/scenes/`): every screen subclasses `BaseScene` and implements `handle_event`, `update(dt)`, `draw(surface)`. Optional hooks are `on_enter` / `on_exit`. Switch scenes with `game.change_scene(NewScene(game))`. When two scenes reference each other, import the module at the top of the file (`from src.scenes import play_scene`) and access the class at call time (`play_scene.PlayScene(self.game)`) so the circular import resolves.
-- **Entities** (`src/entities/`): `pygame.sprite.Sprite` subclasses with `update(dt)`. Movement should be `speed * dt` (frame-rate independent).
-- **UI** (`src/ui/`): HUD and other UI components.
-- **Settings** (`src/core/settings.py`): the single home for constants (screen size, FPS, colors, asset paths, and any future tuning values or key bindings). Do not hard-code these in other modules.
+- **Game loop** (`src/core/engine.py`): `Game` owns the window, clock, the shared `Session`, and the active scene. Each frame: compute `dt` in seconds (clamped to `MAX_DT`), forward events to `scene.handle_event`, then `scene.update(dt)`, then `scene.draw(screen)`. The game starts in `MenuScene`.
+- **Session** (`src/core/session.py`): the menu options, the chosen level, the per-ghost block programs (flat lists) and parsed trees, and the planning time left. It is passed from scene to scene.
+- **Scenes** (`src/scenes/`): `MenuScene` → `PreviewScene` → `PlanScene` → `PlayScene` → `ResultScene`. Every scene subclasses `BaseScene`, takes `(game, session)`, and implements `handle_event`, `update(dt)`, `draw(surface)`. Each scene keeps its UI components in `self.ui`, uses `forward_event`, `update_ui`, and `draw_ui` from `BaseScene`, and switches with `game.change_scene(NewScene(game, session))`. When two scenes reference each other, import the module at the top of the file (`from src.scenes import play_scene`) and access the class at call time (`play_scene.PlayScene(self.game, self.session)`) so the circular import resolves.
+- **Plan scene**: the player clicks a ghost on the map to select it. The ghost switches to its `selected/` sprite and the block palette and program panel appear for that ghost. While a GOTO block is selected, a map click sets its target instead of selecting a ghost.
+- **Entities** (`src/entities/`): `Player` (Pac-Man) and `Enemy` (ghost) are display-only sprites driven by the `Sim`; they hold no rules. `Animator` plays one animation per direction. Movement is tick-based: sprites are drawn at `lerp(previous_tile, tile, tick_progress)`. This is an intentional exception to the `speed * dt` rule; animation frames still advance with `dt`.
+- **UI** (`src/ui/`): `MapView` (tile-image map), `Board` (map plus character sprites), `ImageButton`, `Panel` (9-slice), `Label`, `FlashMessage`, `HUD`, and `block_view`.
+- **Settings** (`src/core/settings.py`): the single home for constants: screen size, tuning values, the difficulty and score tables, layout rects, key names, and every image path. Do not hard-code these in other modules.
+
+## Drawing rules
+
+- Everything on screen uses images exported from Aseprite. Never draw characters, tiles, buttons, panels, or blocks with `pygame.draw`; the only exceptions are debug overlays and text.
+- Never bake changing text (timer, score, numbers, block labels) into images; draw the empty art and render text on top with `Label` or `load_font`.
+- Scale pixel art with `pygame.transform.scale` by an integer factor, once at load time. Never use `smoothscale`. Map art uses the largest integer scale up to `ART_SCALE` that fits the scene's map rect; UI art uses `UI_SCALE`.
+- Missing images fall back to the loader's magenta placeholder, so a planned image path can be used before the art exists.
 
 ## Code Rules
 

@@ -1,6 +1,7 @@
 import pygame
 
 from src.core import settings
+from src.core.session import Session
 from src.scenes.base_scene import BaseScene
 from src.scenes.menu_scene import MenuScene
 
@@ -17,7 +18,8 @@ class Game:
         pygame.display.set_caption(settings.TITLE)
         self.clock = pygame.time.Clock()
         self.running = True
-        self.scene: BaseScene = MenuScene(self)
+        self.session = Session()
+        self.scene: BaseScene = MenuScene(self, self.session)
 
     def change_scene(self, scene: BaseScene) -> None:
         self.scene.on_exit()
