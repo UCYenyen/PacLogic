@@ -21,6 +21,6 @@ def draw_block(surface: pygame.Surface, block: dict, topleft, typing: bool = Fal
     if block["type"] in COUNT_RANGES:
         box = pygame.Rect([value * settings.UI_SCALE for value in settings.COUNT_BOX]).move(rect.topleft)
         color = settings.COUNT_TYPING_COLOR if typing else settings.COUNT_COLOR
-        text = load_font(settings.FONT_SMALL).render(f"{block['n']}x", True, color)
+        text = load_font(settings.FONT_SMALL).render(f"{block['n']}x", settings.FONT_ANTIALIAS, color)
         surface.blit(text, text.get_rect(center=box.center))
     return rect

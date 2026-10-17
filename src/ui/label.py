@@ -21,7 +21,7 @@ class Label(Component):
             return
         self.text = text
         self.color = color
-        self.image = self.font.render(text, True, color)
+        self.image = self.font.render(text, settings.FONT_ANTIALIAS, color)
 
     @property
     def rect(self) -> pygame.Rect:

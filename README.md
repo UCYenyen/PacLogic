@@ -54,4 +54,4 @@ src/ui/                      Map view, board, buttons, panels, labels, HUD
 
 ## Credits
 
-- Pixel font: Aseprite Font by David Capello (https://www.aseprite.org/), licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). See `assets/fonts/aseprite_font_LICENSE.txt`.
+- Font: Jersey 10 by The Soft Type Project Authors (https://github.com/scfried/soft-type-jersey), from Google Fonts, licensed under the SIL Open Font License 1.1. See `assets/fonts/Jersey10-OFL.txt`.

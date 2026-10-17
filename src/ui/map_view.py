@@ -29,7 +29,7 @@ class MapView:
         self.exit = load_scaled_image(settings.TILE_EXIT, self.scale, fallback)
         self.safe_zone = load_scaled_image(settings.TILE_SAFE_ZONE, self.scale, fallback)
         self.cost_inset = settings.ROUTE_TILE_BORDER * self.scale + settings.COST_TEXT_GAP
-        self.cost_fonts = [load_font(settings.PIXEL_FONT_SIZE * scale) for scale in range(settings.COST_FONT_MAX_SCALE, 0, -1)]
+        self.cost_fonts = [load_font(size) for size in settings.COST_FONT_SIZES]
         self.background = self.render_background()
         self.safe_zone_layer = self.render_safe_zone_layer()
 
@@ -88,7 +88,7 @@ class MapView:
         for tile, (g_label, h_label) in latest.items():
             left, top = self.tile_topleft(tile)
             inner = pygame.Rect(left, top, self.tile_px, self.tile_px).inflate(-2 * self.cost_inset, -2 * self.cost_inset)
-            g_text = font.render(g_label, True, settings.COST_G_COLOR)
-            h_text = font.render(h_label, True, settings.COST_H_COLOR)
+            g_text = font.render(g_label, settings.FONT_ANTIALIAS, settings.COST_G_COLOR)
+            h_text = font.render(h_label, settings.FONT_ANTIALIAS, settings.COST_H_COLOR)
             surface.blit(g_text, inner.topleft)
             surface.blit(h_text, h_text.get_rect(bottomleft=inner.bottomleft))

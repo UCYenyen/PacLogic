@@ -107,4 +107,4 @@ Naming rules:
 
 ### Placeholders
 
-`fonts/aseprite_font.png` is Aseprite's pixel font (CC BY 4.0, credited in the README). `load_font(size)` reads it as a sprite sheet (`src/core/pixel_font.py`) and scales it by a whole number, roughly `size / PIXEL_FONT_SIZE`.
+`fonts/Jersey10-Regular.ttf` is the Jersey 10 pixel font from Google Fonts (SIL Open Font License, `fonts/Jersey10-OFL.txt`, credited in the README). It was picked for its clear digits, since the route shows g(n) and h(n).

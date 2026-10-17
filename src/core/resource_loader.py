@@ -4,7 +4,6 @@ from functools import lru_cache
 import pygame
 
 from src.core import settings
-from src.core.pixel_font import PixelFont
 
 FRAME_NUMBER = re.compile(r"(\d+)$")
 
@@ -68,11 +67,10 @@ def list_folders(relative_path: str) -> list:
 
 
 @lru_cache(maxsize=None)
-def load_font(size: int, relative_path: str = settings.PIXEL_FONT) -> PixelFont | pygame.font.Font:
+def load_font(size: int, relative_path: str = settings.DEFAULT_FONT) -> pygame.font.Font:
     path = settings.FONTS_DIR / relative_path
     try:
-        sheet = pygame.image.load(str(path))
-    except (pygame.error, FileNotFoundError) as exc:
+        return pygame.font.Font(str(path), size)
+    except (pygame.error, FileNotFoundError, OSError) as exc:
         print(f"[resource_loader] Could not load font '{path}': {exc}")
         return pygame.font.Font(None, size)
-    return PixelFont(sheet, max(1, round(size / settings.PIXEL_FONT_SIZE)))
