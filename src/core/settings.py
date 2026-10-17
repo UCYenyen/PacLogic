@@ -1,8 +1,8 @@
 from pathlib import Path
 
 TITLE = "PacLogic"
-SCREEN_WIDTH = 960
-SCREEN_HEIGHT = 540
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
 FPS = 60
 MAX_DT = 0.05
 
@@ -71,6 +71,18 @@ GHOST_SPRITE_DIR = "sprites/ghosts"
 GHOST_ACTION = "move"
 GHOST_SELECTED_FOLDER = "selected"
 GHOST_ORDER = ("red-ghost", "blue-ghost", "pink-ghost", "orange-ghost")
+
+TILE_WALL = "sprites/tile/wall-tile.png"
+TILE_FLOOR = "sprites/tile/empty-tile.png"
+TILE_PELLET = "sprites/items/pellet/pellet.png"
+TILE_ROUTE = "sprites/tile/path/path-preview.png"
+TILE_EXIT = "sprites/tile/exit-tile.png"
+TILE_SAFE_ZONE = "sprites/tile/safe-zone.png"
+TILE_GOTO_TARGET = "sprites/tile/goto-target.png"
+
+PREVIEW_MAP_RECT = (24, 24, 820, 672)
+PLAN_MAP_RECT = (16, 72, 624, 632)
+PLAY_MAP_RECT = (24, 24, 900, 672)
 
 PACMAN_FRAME_DURATION = 0.08
 GHOST_FRAME_DURATION = 0.18
