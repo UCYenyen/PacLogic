@@ -35,7 +35,7 @@ Gameplay is being written from scratch by the user. `Player`, `Enemy`, `MenuScen
 ## Conventions
 
 - Load assets only through `src/core/resource_loader.py` (`load_image`, `load_sound`, `load_font`, `play_music`). Paths are relative to the asset subfolder, e.g. `load_image("sprites/player.png")`, `load_sound("sfx/jump.wav")`. The loaders are cached and return placeholders on failure. Never call `pygame.image.load` directly.
-- Every package directory needs an `__init__.py` (double underscores).
+- Do not create `__init__.py` files. Packages are namespace packages, and imports always use the full module path (`from src.entities.enemy import Enemy`).
 - Use type hints and keep modules small and single-purpose.
 
 ## Assets
