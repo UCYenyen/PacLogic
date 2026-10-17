@@ -198,15 +198,16 @@ class PlanScene(BaseScene):
             self.armed_goto = None
 
     def delete_row(self, position):
-        if self.selected_ghost is None:
+        if self.selected_ghost is None or self.press is not None:
             return
         row = self.row_at(position)
         if row is not None and self.current_program.pop(row) is self.armed_goto:
             self.armed_goto = None
 
     def lock(self):
+        first_attempt = not self.session.trees
         self.session.trees = [blocks.parse(program) for program in self.programs]
-        self.session.seconds_left = max(0.0, self.time_left)
+        self.session.seconds_left = max(0.0, self.time_left) if first_attempt else 0.0
         self.game.change_scene(play_scene.PlayScene(self.game, self.session))
 
     def handle_event(self, event: pygame.event.Event):

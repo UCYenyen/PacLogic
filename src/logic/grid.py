@@ -227,21 +227,26 @@ def _farthest(distances: dict) -> tuple[int, int]:
     return max(distances, key=lambda tile: (distances[tile], -tile[1], -tile[0]))
 
 
+def _route_tiles(level: Level, stops: list) -> set:
+    tables = {stop: bfs_dist(level, stop) for stop in stops}
+    tiles = set()
+    for index, a in enumerate(stops):
+        for b in stops[index + 1:]:
+            length = tables[a][b]
+            tiles.update(tile for tile in level.floor_tiles if tables[a][tile] + tables[b][tile] == length)
+    return tiles
+
+
 def _pick_ghosts(level: Level, count: int, rng: random.Random) -> list:
     from_start = bfs_dist(level, level.start)
-    from_goal = bfs_dist(level, level.goal)
-    route_length = from_start[level.goal]
-    candidates = [
-        tile
-        for tile in level.floor_tiles
-        if tile not in level.safe_zone
-        and tile != level.start
-        and from_start[tile] >= settings.GHOST_MIN_START_DISTANCE
-    ]
+    on_route = _route_tiles(level, [level.start, level.goal, *sorted(level.pellets)])
+    open_tiles = [tile for tile in level.floor_tiles if tile not in level.safe_zone and tile not in on_route]
+    candidates = [tile for tile in open_tiles if from_start[tile] >= settings.GHOST_MIN_START_DISTANCE]
+    if len(candidates) < count:
+        candidates = open_tiles
     if len(candidates) < count:
         candidates = [tile for tile in level.floor_tiles if tile not in level.safe_zone and tile != level.start]
     rng.shuffle(candidates)
-    candidates.sort(key=lambda tile: from_start[tile] + from_goal[tile] - route_length)
     chosen = []
     for spacing in (6, 4, 2, 0):
         for tile in candidates:
@@ -263,12 +268,9 @@ def generate_level(width: int, height: int, seed: int, pellet_count: int, ghost_
     goal = _farthest(bfs_dist(draft, draft.start))
     start = _farthest(bfs_dist(draft, goal))
     draft = Level(name, width, height, walls, start, goal, (), frozenset())
-    ghosts = _pick_ghosts(draft, ghost_count, rng)
-    free = [
-        tile
-        for tile in draft.floor_tiles
-        if tile not in draft.safe_zone and tile != start and tile not in ghosts
-    ]
+    free = [tile for tile in draft.floor_tiles if tile not in draft.safe_zone and tile != start]
     pellets = frozenset(rng.sample(free, min(pellet_count, len(free))))
+    draft = Level(name, width, height, walls, start, goal, (), pellets)
+    ghosts = _pick_ghosts(draft, ghost_count, rng)
     level = Level(name, width, height, walls, start, goal, tuple(ghosts), pellets)
     return validate_level(level)
