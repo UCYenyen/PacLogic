@@ -26,7 +26,7 @@ python main.py
 3. **Plan**: click a ghost on the map to program it.
    - Click a palette block to append it, or drag it between rows to insert it.
    - Drag a program block to reorder it. Drag it out of the panel or right click it to delete it.
-   - REPEAT works like a Scratch C-block: blocks dropped between REPEAT and its closing line run inside the loop, and blocks below the line run after it. A clicked palette block always lands at the bottom, so drag a block to put it inside a loop. Dragging or deleting a REPEAT takes everything inside it along.
+   - REPEAT works like a Scratch C-block: blocks indented under a REPEAT run inside the loop. When you drop a block, drop it indented under a REPEAT to put it inside, or further left to put it after the loop. A clicked palette block lands at the bottom, inside the last loop if the program ends with one. Dragging or deleting a REPEAT takes everything inside it along.
    - Click a REPEAT or WAIT block to change the number in its box: REPEAT runs its inside that many times (2 to 9), WAIT stands still for that many ticks (1 to 9).
    - Each program runs once from top to bottom. When it ends, the ghost waits where it is. Use REPEAT to keep it moving.
    - Press Lock & Run, or wait for the timer to reach 0.

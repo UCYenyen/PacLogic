@@ -120,7 +120,6 @@ UI_BANNER_BLOCKED = "ui/banner-blocked.png"
 UI_BLOCKS = {
     "WAIT": "ui/plan/blocks/wait.png",
     "REPEAT": "ui/plan/blocks/repeat-empty.png",
-    "END": "ui/plan/blocks/repeat-end.png",
 }
 UI_MOVE_BLOCKS = {code: f"ui/plan/blocks/move-{name}.png" for code, name in DIRECTION_NAMES.items()}
 COUNT_BOX = (48, 2, 15, 9)
@@ -160,7 +159,7 @@ PROGRAM_RECT = (920, 72, 344, 560)
 PANEL_PADDING = 12
 BLOCK_GAP = 6
 ROW_HEIGHT = 26
-INDENT = 18
+INDENT = 24
 DRAG_THRESHOLD = 6
 SCROLL_STEP = 26
 

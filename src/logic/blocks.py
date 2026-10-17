@@ -4,7 +4,6 @@ from src.logic.sim import idle
 MOVE = "MOVE"
 WAIT = "WAIT"
 REPEAT = "REPEAT"
-END = "END"
 
 PALETTE = (
     {"type": MOVE, "dir": "U"},
@@ -16,50 +15,28 @@ PALETTE = (
 )
 
 
-def new_blocks(template: dict) -> list:
-    if template["type"] == REPEAT:
-        return [dict(template), {"type": END}]
-    return [dict(template)]
-
-
-def count(program: list) -> int:
-    return sum(1 for block in program if block["type"] != END)
+def new_block(template: dict, depth: int) -> dict:
+    return {**template, "depth": depth}
 
 
 def can_add(program: list, limit: int) -> bool:
-    return count(program) < limit
+    return len(program) < limit
 
 
 def block_span(program: list, index: int) -> tuple[int, int]:
-    kind = program[index]["type"]
-    if kind not in (REPEAT, END):
-        return index, index + 1
-    forward = kind == REPEAT
-    depth = 0
-    position = index
-    while 0 <= position < len(program):
-        current = program[position]["type"]
-        if current == REPEAT:
-            depth += 1 if forward else -1
-        elif current == END:
-            depth += -1 if forward else 1
-        if depth == 0:
-            break
-        position += 1 if forward else -1
-    position = max(0, min(position, len(program) - 1))
-    return (index, position + 1) if forward else (position, index + 1)
+    head = program[index]
+    stop = index + 1
+    if head["type"] == REPEAT:
+        while stop < len(program) and program[stop]["depth"] > head["depth"]:
+            stop += 1
+    return index, stop
 
 
-def depths(program: list) -> list:
-    result = []
-    depth = 0
-    for block in program:
-        if block["type"] == END:
-            depth = max(0, depth - 1)
-        result.append(depth)
-        if block["type"] == REPEAT:
-            depth += 1
-    return result
+def depth_range(program: list, index: int) -> tuple[int, int]:
+    previous = program[index - 1] if index > 0 else None
+    highest = previous["depth"] + (previous["type"] == REPEAT) if previous else 0
+    lowest = program[index]["depth"] if index < len(program) else 0
+    return lowest, highest
 
 
 COUNT_RANGES = {
@@ -81,21 +58,19 @@ def _clamp(value: int, low: int, high: int) -> int:
 
 def parse(program: list) -> list:
     root = []
-    current = root
-    parents = []
+    levels = [root]
     for block in program:
+        depth = max(0, min(block["depth"], len(levels) - 1))
+        del levels[depth + 1:]
         kind = block["type"]
         if kind == MOVE:
-            current.append({"type": MOVE, "dir": block["dir"]})
+            levels[depth].append({"type": MOVE, "dir": block["dir"]})
         elif kind == WAIT:
-            current.append({"type": WAIT, "n": _clamp(block["n"], settings.WAIT_MIN, settings.WAIT_MAX)})
+            levels[depth].append({"type": WAIT, "n": _clamp(block["n"], settings.WAIT_MIN, settings.WAIT_MAX)})
         elif kind == REPEAT:
             node = {"type": REPEAT, "n": _clamp(block["n"], settings.REPEAT_MIN, settings.REPEAT_MAX), "body": []}
-            current.append(node)
-            parents.append(current)
-            current = node["body"]
-        elif kind == END and parents:
-            current = parents.pop()
+            levels[depth].append(node)
+            levels.append(node["body"])
     return root
 
 
