@@ -66,6 +66,10 @@ class Level:
         )
 
     @cached_property
+    def adjacency(self) -> dict:
+        return {tile: tuple(self.neighbors(tile)) for tile in self.floor_tiles}
+
+    @cached_property
     def safe_zone(self) -> frozenset:
         distances = bfs_dist(self, self.goal)
         return frozenset(tile for tile, distance in distances.items() if distance <= settings.SAFE_RADIUS)
