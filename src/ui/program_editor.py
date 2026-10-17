@@ -43,7 +43,12 @@ class ProgramEditor:
         ]
         self.header = Label("", (self.palette_rect.x, settings.PLAN_TITLE_Y), settings.FONT_MEDIUM, settings.ACCENT_COLOR, "midleft")
         self.counter = Label("", (self.program_rect.right, settings.PLAN_TITLE_Y), settings.FONT_MEDIUM, anchor="midright")
-        self.ui = [Panel(self.palette_rect), Panel(self.program_rect), self.header, self.counter]
+        self.ui = [
+            Panel(self.palette_rect, settings.UI_BLOCK_PANEL, settings.UI_BLOCK_PANEL_BORDER),
+            Panel(self.program_rect, settings.UI_BLOCK_PANEL, settings.UI_BLOCK_PANEL_BORDER),
+            self.header,
+            self.counter,
+        ]
 
     def edit(self, ghost_index: int, program: list):
         self.program = program
