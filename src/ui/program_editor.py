@@ -207,7 +207,7 @@ class ProgramEditor:
         mouse = pygame.mouse.get_pos()
         gap = self.insertion_index(mouse, len(shown)) if self.dragging and self.program_rect.collidepoint(mouse) else None
         surface.set_clip(self.program_rect.inflate(-4, -4))
-        for index, block in enumerate(shown):
+        for index, block in reversed(list(enumerate(shown))):
             slot = index + 1 if gap is not None and index >= gap else index
             top = self.row_top(slot)
             left = self.program_rect.x + settings.PANEL_PADDING + block["depth"] * settings.INDENT
