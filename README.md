@@ -1,8 +1,6 @@
-# My Pygame Game
+# PacLogic
 
-A starter Pygame project with a scene system, safe asset loading, a player, enemies, and a HUD.
-
-The demo gameplay is simple: jump over the enemies walking along the ground. You get a point for each enemy that leaves the screen, and enemies get faster over time.
+A Pygame project skeleton with a game loop, a scene system, and safe asset loading. Gameplay is not implemented yet.
 
 ## Setup
 
@@ -20,24 +18,17 @@ pip install -r requirements.txt
 python main.py
 ```
 
-| Action       | Keys                    |
-|--------------|-------------------------|
-| Move         | ← → / A D               |
-| Jump         | Space / ↑ / W           |
-| Start (menu) | Enter / Space / click   |
-| Pause / Quit | Esc                     |
-
 ## Project structure
 
 ```text
-main.py                 Entry point
-assets/                 Fonts, images, sounds (placeholders, replace freely)
-src/core/engine.py      Game class: window, main loop, scene switching
-src/core/settings.py    Constants: screen size, FPS, colors, physics, keys, paths
+main.py                      Entry point
+assets/                      Fonts, images, sounds (placeholders, replace freely)
+src/core/engine.py           Game class: window, main loop, scene switching
+src/core/settings.py         Constants: screen size, FPS, colors, paths
 src/core/resource_loader.py  Cached asset loaders with fallbacks
-src/entities/           Player, Enemy sprites
-src/scenes/             BaseScene, MenuScene, PlayScene
-src/ui/hud.py           HUD overlay and Button
+src/entities/                Player, Enemy (empty stubs)
+src/scenes/                  BaseScene, MenuScene, PlayScene (empty stubs)
+src/ui/hud.py                HUD (empty stub)
 ```
 
 ## Adding a new scene

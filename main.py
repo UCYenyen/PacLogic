@@ -1,4 +1,3 @@
-"""Entry point: bootstraps the game loop."""
 from src.core.engine import Game
 
 
