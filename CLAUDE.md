@@ -107,4 +107,4 @@ Naming rules:
 
 ### Placeholders
 
-`fonts/default.ttf` is pygame's FreeSans. Replace it freely, keeping the same filename or updating `DEFAULT_FONT` in settings.
+`fonts/aseprite_font.png` is Aseprite's pixel font (CC BY 4.0, credited in the README). `load_font(size)` reads it as a sprite sheet (`src/core/pixel_font.py`) and scales it by a whole number, roughly `size / PIXEL_FONT_SIZE`.

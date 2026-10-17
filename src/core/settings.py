@@ -11,7 +11,8 @@ ASSETS_DIR = ROOT_DIR / "assets"
 FONTS_DIR = ASSETS_DIR / "fonts"
 IMAGES_DIR = ASSETS_DIR / "images"
 LEVELS_DIR = ASSETS_DIR / "levels"
-DEFAULT_FONT = "default.ttf"
+PIXEL_FONT = "aseprite_font.png"
+PIXEL_FONT_SIZE = 8
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

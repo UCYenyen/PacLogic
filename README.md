@@ -51,3 +51,7 @@ src/entities/                Pac-Man and ghost sprites, Animator
 src/scenes/                  Menu, Preview, Plan, Play, Result
 src/ui/                      Map view, board, buttons, panels, labels, HUD
 ```
+
+## Credits
+
+- Pixel font: Aseprite Font by David Capello (https://www.aseprite.org/), licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). See `assets/fonts/aseprite_font_LICENSE.txt`.
