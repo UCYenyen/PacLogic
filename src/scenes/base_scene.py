@@ -1,4 +1,3 @@
-"""Abstract base class every scene (screen / game state) inherits from."""
 from abc import ABC, abstractmethod
 
 import pygame
@@ -9,10 +8,10 @@ class BaseScene(ABC):
         self.game = game
 
     def on_enter(self) -> None:
-        """Called when the scene becomes active."""
+        pass
 
     def on_exit(self) -> None:
-        """Called right before the scene is replaced."""
+        pass
 
     @abstractmethod
     def handle_event(self, event: pygame.event.Event) -> None: ...
