@@ -7,6 +7,7 @@ from src.logic.sim import Sim, tiles_along
 
 LEVEL_CHOICES = tuple(settings.LEVEL_FILES) + tuple(settings.RANDOM_LEVELS)
 AI_CHOICES = tuple(settings.DIFFICULTIES)
+OPTIONS = ("level", "ai", "ghosts", "mode", "time")
 
 
 @lru_cache(maxsize=None)

@@ -4,6 +4,7 @@ import pygame
 
 from src.core import settings
 from src.core.resource_loader import has_image
+from src.core.session import OPTIONS
 from src.logic.grid import LevelError
 from src.scenes import preview_scene
 from src.scenes.base_scene import BaseScene
@@ -12,8 +13,6 @@ from src.ui.image import Image
 from src.ui.label import FlashMessage, Label
 from src.ui.panel import Panel
 
-OPTIONS = ("level", "ai", "ghosts", "mode", "time")
-
 
 class MenuScene(BaseScene):
     def __init__(self, game, session):
@@ -21,15 +20,15 @@ class MenuScene(BaseScene):
         self.cancel_key = pygame.key.key_code(settings.KEY_CANCEL)
         center_x = settings.SCREEN_WIDTH // 2
         self.main_ui = [
-            Image(settings.MENU_LOGO, (center_x, 200), settings.MENU_SCALE),
+            Image(settings.MENU_LOGO, (center_x, settings.MENU_LOGO_Y), settings.MENU_SCALE),
             ImageButton(
-                (center_x, 430),
+                (center_x, settings.MENU_PLAY_Y),
                 self.open_setup,
                 images=(settings.MENU_PLAY_BUTTON,) * 3,
                 scale=settings.MENU_SCALE,
             ),
             ImageButton(
-                (center_x, 510),
+                (center_x, settings.MENU_QUIT_Y),
                 self.game.quit,
                 images=(settings.MENU_QUIT_BUTTON,) * 3,
                 scale=settings.MENU_SCALE,

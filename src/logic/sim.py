@@ -21,12 +21,12 @@ class PacManBrain:
         self.nodes_expanded = 0
         self.last_ms = 0.0
         self.slowest_ms = 0.0
-        result = self._plan(level.start, level.pellets)
+        result = self.make_plan(level.start, level.pellets)
         self.optimal_cost = result.cost or 0
         self.route = list(result.path or [])
         self.planned_route = list(self.route)
 
-    def _plan(self, position, pellets, blocked=frozenset(), danger=None):
+    def make_plan(self, position, pellets, blocked=frozenset(), danger=None):
         result = plan(self.level, position, pellets, self.pellet_mode, blocked, danger)
         self.plans_made += 1
         self.nodes_expanded += result.expanded
@@ -37,9 +37,9 @@ class PacManBrain:
     def next_move(self, position, pellets, ghosts) -> str | None:
         if self.config["replan"]:
             danger = danger_map(self.level, ghosts)
-            result = self._plan(position, pellets, frozenset(ghosts), danger)
+            result = self.make_plan(position, pellets, frozenset(ghosts), danger)
             if result.path is None:
-                result = self._plan(position, pellets, frozenset(), danger)
+                result = self.make_plan(position, pellets, frozenset(), danger)
             self.route = list(result.path or [])
         if not self.route:
             return None

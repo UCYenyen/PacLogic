@@ -9,10 +9,10 @@ FRAME_NUMBER = re.compile(r"(\d+)$")
 
 
 class _SilentSound:
-    def play(self, *args, **kwargs) -> None:
+    def play(self, *args, **kwargs):
         return None
 
-    def set_volume(self, *args, **kwargs) -> None:
+    def set_volume(self, *args, **kwargs):
         return None
 
 
@@ -106,7 +106,7 @@ def load_font(size: int, relative_path: str = settings.DEFAULT_FONT) -> pygame.f
         return pygame.font.Font(None, size)
 
 
-def play_music(relative_path: str, volume: float = 0.5, loops: int = -1) -> None:
+def play_music(relative_path: str, volume: float = 0.5, loops: int = -1):
     if not _mixer_ready():
         return
     path = settings.SOUNDS_DIR / relative_path

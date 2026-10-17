@@ -28,25 +28,25 @@ class MapView:
         self.route = load_scaled_image(settings.TILE_ROUTE, self.scale, fallback)
         self.exit = load_scaled_image(settings.TILE_EXIT, self.scale, fallback)
         self.safe_zone = load_scaled_image(settings.TILE_SAFE_ZONE, self.scale, fallback)
-        self.background = self._render_background()
-        self.safe_zone_layer = self._render_safe_zone_layer()
+        self.background = self.render_background()
+        self.safe_zone_layer = self.render_safe_zone_layer()
 
-    def _local(self, tile) -> tuple[int, int]:
+    def local_topleft(self, tile) -> tuple[int, int]:
         return tile[0] * self.tile_px, tile[1] * self.tile_px
 
-    def _render_background(self) -> pygame.Surface:
+    def render_background(self) -> pygame.Surface:
         surface = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         for y in range(self.level.height):
             for x in range(self.level.width):
                 tile = (x, y)
-                surface.blit(self.wall if tile in self.level.walls else self.floor, self._local(tile))
+                surface.blit(self.wall if tile in self.level.walls else self.floor, self.local_topleft(tile))
         return surface
 
-    def _render_safe_zone_layer(self) -> pygame.Surface:
+    def render_safe_zone_layer(self) -> pygame.Surface:
         surface = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         for tile in self.level.safe_zone:
-            surface.blit(self.safe_zone, self._local(tile))
-        surface.blit(self.exit, self._local(self.level.goal))
+            surface.blit(self.safe_zone, self.local_topleft(tile))
+        surface.blit(self.exit, self.local_topleft(self.level.goal))
         return surface
 
     def tile_topleft(self, tile) -> tuple[int, int]:

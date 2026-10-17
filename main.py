@@ -1,7 +1,7 @@
 from src.core.engine import Game
 
 
-def main() -> None:
+def main():
     Game().run()
 
 

@@ -39,7 +39,7 @@ Scenes, entities, and UI only read from this logic and never change the rules. A
 - **Plan scene**: the player clicks a ghost on the map to select it. The ghost switches to its `selected/` sprite and the block palette and program panel (`src/ui/program_editor.py`) appear for that ghost.
 - **Entities** (`src/entities/`): `Player` (Pac-Man) and `Enemy` (ghost) subclass `Character` and are display-only sprites driven by the `Sim`; they hold no rules. `Animator` plays one animation per direction. Movement is tick-based: sprites are drawn at `lerp(previous_tile, tile, tick_progress)`. This is an intentional exception to the `speed * dt` rule; animation frames still advance with `dt`.
 - **UI** (`src/ui/`): everything a scene puts in `self.ui` subclasses `Component` (no-op `handle_event` and `update`, a `visible` flag, and an abstract `draw`). `MapView` (tile-image map), `Board` (map plus character sprites), `ImageButton`, `Panel` (9-slice), `Label`, `FlashMessage`, `Image`, `HUD`, `ProgramEditor`, and `block_view`.
-- **Settings** (`src/core/settings.py`): the single home for constants: screen size, tuning values, the difficulty and score tables, layout rects, key names, and every image path. Do not hard-code these in other modules.
+- **Settings** (`src/core/settings.py`): the single home for constants: screen size, tuning values, the difficulty and score tables, layout rects and absolute screen positions, key names, and every image path. Offsets measured from a panel's own rect may stay in the scene. Do not hard-code these in other modules.
 
 ## Drawing rules
 
@@ -62,7 +62,9 @@ Scenes, entities, and UI only read from this logic and never change the rules. A
 
 - Load assets only through `src/core/resource_loader.py` (`load_image`, `load_sound`, `load_font`, `play_music`). Paths are relative to the asset subfolder, e.g. `load_image("sprites/pacman/eat-up/eat-up-1.png")`, `load_sound("sfx/jump.wav")`. The loaders are cached and return placeholders on failure. Never call `pygame.image.load` directly.
 - Do not create `__init__.py` files. Packages are namespace packages, and imports always use the full module path (`from src.entities.enemy import Enemy`).
-- Use type hints and keep modules small and single-purpose.
+- Use type hints for parameters and for functions that return a value, but never write `-> None`.
+- Prefix only module-level helpers with `_`; methods never use a leading underscore.
+- Keep modules small and single-purpose.
 
 ## Assets
 

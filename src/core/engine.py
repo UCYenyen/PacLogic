@@ -7,7 +7,7 @@ from src.scenes.menu_scene import MenuScene
 
 
 class Game:
-    def __init__(self) -> None:
+    def __init__(self):
         pygame.init()
         try:
             pygame.mixer.init()
@@ -21,23 +21,23 @@ class Game:
         self.session = Session()
         self.scene: BaseScene = MenuScene(self, self.session)
 
-    def change_scene(self, scene: BaseScene) -> None:
+    def change_scene(self, scene: BaseScene):
         self.scene = scene
 
-    def quit(self) -> None:
+    def quit(self):
         self.running = False
 
-    def run(self) -> None:
+    def run(self):
         while self.running:
             dt = min(self.clock.tick(settings.FPS) / 1000.0, settings.MAX_DT)
-            self._handle_events()
+            self.handle_events()
             self.scene.update(dt)
             self.scene.draw(self.screen)
             pygame.display.flip()
 
         pygame.quit()
 
-    def _handle_events(self) -> None:
+    def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.quit()

@@ -14,6 +14,11 @@ OUTCOME_TEXT = {
     ESCAPED: "Pac-Man escaped.",
     BLOCKED: "Time ran out. Pac-Man is blocked.",
 }
+OUTCOME_BANNERS = {
+    CAUGHT: settings.UI_BANNER_CAUGHT,
+    ESCAPED: settings.UI_BANNER_ESCAPED,
+    BLOCKED: settings.UI_BANNER_BLOCKED,
+}
 
 
 class ResultScene(BaseScene):
@@ -21,11 +26,11 @@ class ResultScene(BaseScene):
         super().__init__(game, session)
         center_x = settings.SCREEN_WIDTH // 2
         self.banner = load_scaled_image(
-            settings.UI_BANNERS[sim.status], settings.UI_SCALE, settings.BANNER_PLACEHOLDER_SIZE
+            OUTCOME_BANNERS[sim.status], settings.UI_SCALE, settings.BANNER_PLACEHOLDER_SIZE
         )
-        self.banner_rect = self.banner.get_rect(center=(center_x, 110))
+        self.banner_rect = self.banner.get_rect(center=(center_x, settings.RESULT_BANNER_Y))
         breakdown = score_breakdown(sim, session.seconds_left)
-        panel = Panel((center_x - 260, 220, 520, 300))
+        panel = Panel(settings.RESULT_PANEL_RECT)
         rows = [
             Label(name, (panel.rect.x + 30, panel.rect.y + 30 + row * 40))
             for row, (name, _) in enumerate(breakdown)
@@ -35,7 +40,7 @@ class ResultScene(BaseScene):
             for row, (_, points) in enumerate(breakdown)
         ]
         self.ui = [
-            Label(OUTCOME_TEXT[sim.status], (center_x, 180), settings.FONT_MEDIUM, settings.TEXT_DIM_COLOR, "center"),
+            Label(OUTCOME_TEXT[sim.status], (center_x, settings.RESULT_TEXT_Y), settings.FONT_MEDIUM, settings.TEXT_DIM_COLOR, "center"),
             panel,
             *rows,
             Label("Total", (panel.rect.x + 30, panel.rect.bottom - 60), settings.FONT_LARGE, settings.ACCENT_COLOR),
@@ -46,9 +51,9 @@ class ResultScene(BaseScene):
                 settings.ACCENT_COLOR,
                 "topright",
             ),
-            ImageButton((center_x - 240, 600), self.replay, "Replay"),
-            ImageButton((center_x, 600), self.edit_programs, "Edit programs"),
-            ImageButton((center_x + 240, 600), self.menu, "Menu"),
+            ImageButton((center_x - settings.RESULT_BUTTON_SPACING, settings.RESULT_BUTTON_Y), self.replay, "Replay"),
+            ImageButton((center_x, settings.RESULT_BUTTON_Y), self.edit_programs, "Edit programs"),
+            ImageButton((center_x + settings.RESULT_BUTTON_SPACING, settings.RESULT_BUTTON_Y), self.menu, "Menu"),
         ]
 
     def replay(self):

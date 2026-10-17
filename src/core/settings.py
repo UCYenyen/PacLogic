@@ -104,13 +104,19 @@ OPTION_PLACEHOLDER_SIZE = (130, 20)
 ARROW_GAP = 12
 SETUP_MODAL_RECT = (360, 100, 560, 540)
 MODAL_DIM_COLOR = (0, 0, 0, 170)
+MENU_LOGO_Y = 200
+MENU_PLAY_Y = 430
+MENU_QUIT_Y = 510
+RESULT_BANNER_Y = 110
+RESULT_TEXT_Y = 180
+RESULT_PANEL_RECT = (380, 220, 520, 300)
+RESULT_BUTTON_Y = 600
+RESULT_BUTTON_SPACING = 240
 UI_PANEL = "ui/panel.png"
 UI_PANEL_BORDER = 4
-UI_BANNERS = {
-    "caught": "ui/banner-caught.png",
-    "escaped": "ui/banner-escaped.png",
-    "blocked": "ui/banner-blocked.png",
-}
+UI_BANNER_CAUGHT = "ui/banner-caught.png"
+UI_BANNER_ESCAPED = "ui/banner-escaped.png"
+UI_BANNER_BLOCKED = "ui/banner-blocked.png"
 UI_BLOCKS = {
     "MOVE": "ui/blocks/move.png",
     "WAIT": "ui/blocks/wait.png",

@@ -4,7 +4,7 @@ import pygame
 
 
 class BaseScene(ABC):
-    def __init__(self, game, session) -> None:
+    def __init__(self, game, session):
         self.game = game
         self.session = session
         self.ui = []
@@ -26,10 +26,10 @@ class BaseScene(ABC):
             component.draw(surface)
 
     @abstractmethod
-    def handle_event(self, event: pygame.event.Event) -> None: ...
+    def handle_event(self, event: pygame.event.Event): ...
 
     @abstractmethod
-    def update(self, dt: float) -> None: ...
+    def update(self, dt: float): ...
 
     @abstractmethod
-    def draw(self, surface: pygame.Surface) -> None: ...
+    def draw(self, surface: pygame.Surface): ...
