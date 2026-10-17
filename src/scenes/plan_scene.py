@@ -54,9 +54,8 @@ class PlanScene(BaseScene):
         self.timer.set_text(f"{seconds // 60}:{seconds % 60:02d}", color)
 
     def lock(self):
-        first_attempt = not self.session.trees
         self.session.trees = [blocks.parse(program) for program in self.programs]
-        self.session.seconds_left = max(0.0, self.time_left) if first_attempt else 0.0
+        self.session.seconds_left = max(0.0, self.time_left)
         self.game.change_scene(play_scene.PlayScene(self.game, self.session))
 
     def handle_event(self, event: pygame.event.Event):

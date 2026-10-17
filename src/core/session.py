@@ -97,6 +97,9 @@ class Session:
         self.route_tiles = tiles_along(level.start, preview.brain.planned_route)
         self.optimal_cost = preview.brain.optimal_cost
         self.tick_cap = preview.tick_cap
+        self.clear_programs()
+
+    def clear_programs(self):
         self.programs = [[] for _ in range(self.ghost_count)]
         self.trees = []
 

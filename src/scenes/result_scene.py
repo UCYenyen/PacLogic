@@ -3,7 +3,7 @@ import pygame
 from src.core import settings
 from src.core.resource_loader import load_scaled_image
 from src.logic.sim import BLOCKED, CAUGHT, ESCAPED, score_breakdown, total_score
-from src.scenes import menu_scene, plan_scene, play_scene
+from src.scenes import menu_scene, plan_scene
 from src.scenes.base_scene import BaseScene
 from src.ui.button import ImageButton
 from src.ui.label import Label
@@ -51,15 +51,12 @@ class ResultScene(BaseScene):
                 settings.ACCENT_COLOR,
                 "topright",
             ),
-            ImageButton((center_x - settings.RESULT_BUTTON_SPACING, settings.RESULT_BUTTON_Y), self.replay, "Replay"),
-            ImageButton((center_x, settings.RESULT_BUTTON_Y), self.edit_programs, "Edit programs"),
+            ImageButton((center_x - settings.RESULT_BUTTON_SPACING, settings.RESULT_BUTTON_Y), self.restart, "Restart"),
             ImageButton((center_x + settings.RESULT_BUTTON_SPACING, settings.RESULT_BUTTON_Y), self.menu, "Menu"),
         ]
 
-    def replay(self):
-        self.game.change_scene(play_scene.PlayScene(self.game, self.session))
-
-    def edit_programs(self):
+    def restart(self):
+        self.session.clear_programs()
         self.game.change_scene(plan_scene.PlanScene(self.game, self.session))
 
     def menu(self):

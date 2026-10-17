@@ -28,7 +28,7 @@ python main.py
    - Click REPEAT or IF PAC WITHIN to cycle its number.
    - Press Lock & Run, or wait for the timer to reach 0.
 4. **Run**: SPACE pauses, F toggles speed between x1 and x4.
-5. **Result**: Replay, edit the programs, or go back to the menu.
+5. **Result**: Restart to replan the same map from empty programs, or go back to the menu.
 
 ## Design notes
 
